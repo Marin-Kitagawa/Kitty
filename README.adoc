@@ -104,24 +104,28 @@ image::04-ui-anatomy.png[UI Anatomy, width=900]
 
 === Layout Regions
 
-| Region | Description |
-|--------|-------------|
-| **Title Bar** | Logo (30×30), app name, caption buttons (Min/Max/Close). Double-click maximizes. |
-| **Left Rail** | World switcher (Ctrl+W), Range selector (Daily/Weekly/Monthly), Source toggle (API/Scrape), Language combobox with live filter. |
-| **Repo Sheet** | Virtualized `ItemsRepeater` bound to `VisibleRepos`. Columns: Rank, ★ Stars, Forks, Language pill (color-coded), Description, Owner/Name link. Click opens repo in browser; Ctrl+C copies clone URL. |
-| **Status Bar** | Source badge (`search-api` / `trending-scrape`), warning text, signed-in avatar with tooltip. |
-| **Settings Overlay** | Esc to close. GitHub auth (device flow), token display/copy, Theme (Dawn/Dusk), World selector (6 cards), Language cache clear. |
+[cols="1,3",options="header"]
+|===
+| Region | Description
+| **Title Bar** | Logo (30×30), app name, caption buttons (Min/Max/Close). Double-click maximizes.
+| **Left Rail** | World switcher (Ctrl+W), Range selector (Daily/Weekly/Monthly), Source toggle (API/Scrape), Language combobox with live filter.
+| **Repo Sheet** | Virtualized `ItemsRepeater` bound to `VisibleRepos`. Columns: Rank, ★ Stars, Forks, Language pill (color-coded), Description, Owner/Name link. Click opens repo in browser; Ctrl+C copies clone URL.
+| **Status Bar** | Source badge (`search-api` / `trending-scrape`), warning text, signed-in avatar with tooltip.
+| **Settings Overlay** | Esc to close. GitHub auth (device flow), token display/copy, Theme (Dawn/Dusk), World selector (6 cards), Language cache clear.
+|===
 
 === Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `F5` | Refresh |
-| `Ctrl+W` | Next world |
-| `Ctrl+G` | Open GitHub trending page |
-| `Ctrl+F` / `F3` | Focus language filter |
-| `Escape` | Close settings overlay |
-| `W` / `D` | Window drag (when not in text input) |
+[cols="1,3",options="header"]
+|===
+| Shortcut | Action
+| `F5` | Refresh
+| `Ctrl+W` | Next world
+| `Ctrl+G` | Open GitHub trending page
+| `Ctrl+F` / `F3` | Focus language filter
+| `Escape` | Close settings overlay
+| `W` / `D` | Window drag (when not in text input)
+|===
 
 === Visual Worlds
 
@@ -129,14 +133,16 @@ Kitty ships with six **worlds** — complete semantic color palettes. A world on
 
 image::05-worlds-palettes.png[World Palettes, width=900]
 
-| World | ID | Variant | Character |
-|-------|-----|---------|-----------|
-| **Risograph Press** | `riso` | Light | Warm paper, sakura accent |
-| **Character Shelf** | `shelf` | Light | Warm neutrals, sakura accent |
-| **Split-Flap Board** | `board` | **Dark** | High-contrast monochrome |
-| **Cassette Insert** | `tape` | Light | Muted warm, deep rose accent |
-| **Language Programme** | `programme` | Light | Editorial serif headlines, amber accent |
-| **Category Standard** | `canon` | Light | Clean standard, TypeScript blue accent |
+[cols="1,1,1,3",options="header"]
+|===
+| World | ID | Variant | Character
+| **Risograph Press** | `riso` | Light | Warm paper, sakura accent
+| **Character Shelf** | `shelf` | Light | Warm neutrals, sakura accent
+| **Split-Flap Board** | `board` | **Dark** | High-contrast monochrome
+| **Cassette Insert** | `tape` | Light | Muted warm, deep rose accent
+| **Language Programme** | `programme` | Light | Editorial serif headlines, amber accent
+| **Category Standard** | `canon` | Light | Clean standard, TypeScript blue accent
+|===
 
 === Semantic Tokens (Shared)
 
@@ -161,17 +167,19 @@ image::06-data-model.png[Core Data Model, width=900]
 
 === Key Types
 
-| Type | Description |
-|------|-------------|
-| `TrendRange` | `Daily` \| `Weekly` \| `Monthly` |
-| `SourceMode` | `ApiFirst` (default) \| `ScrapePrimary` (opt-in) |
-| `LanguageOption` | Label + Slug (`"Any language"` = empty slug) |
-| `RepoItem` | Owner, Name, Description, Language, LanguageColor, Stars, Forks, PeriodStars?, HtmlUrl, CloneUrl, FullName |
-| `TrendResult` | `Repos: IReadOnlyList<RepoItem>`, `Source: "search-api" \| "trending-scrape"`, `Warning?` |
-| `Settings` | SourceMode, Token?, OAuthClientId?, RefreshToken?, TokenExpiresAtUtc?, Login?, LastLanguage, LastLanguageSlug, Theme (`dusk`/`dawn`), World (`riso`..`canon`), CachedLanguagesJson? |
-| `DeviceCodeInfo` | DeviceCode, UserCode, VerificationUri, ExpiresInSeconds, IntervalSeconds |
-| `OAuthToken` | AccessToken, RefreshToken?, ExpiresInSeconds?, Scope? |
-| `LoginProbe` | Login?, Rejected |
+[cols="1,3",options="header"]
+|===
+| Type | Description
+| `TrendRange` | `Daily` \| `Weekly` \| `Monthly`
+| `SourceMode` | `ApiFirst` (default) \| `ScrapePrimary` (opt-in)
+| `LanguageOption` | Label + Slug (`"Any language"` = empty slug)
+| `RepoItem` | Owner, Name, Description, Language, LanguageColor, Stars, Forks, PeriodStars?, HtmlUrl, CloneUrl, FullName
+| `TrendResult` | `Repos: IReadOnlyList<RepoItem>`, `Source: "search-api" \| "trending-scrape"`, `Warning?`
+| `Settings` | SourceMode, Token?, OAuthClientId?, RefreshToken?, TokenExpiresAtUtc?, Login?, LastLanguage, LastLanguageSlug, Theme (`dusk`/`dawn`), World (`riso`..`canon`), CachedLanguagesJson?
+| `DeviceCodeInfo` | DeviceCode, UserCode, VerificationUri, ExpiresInSeconds, IntervalSeconds
+| `OAuthToken` | AccessToken, RefreshToken?, ExpiresInSeconds?, Scope?
+| `LoginProbe` | Login?, Rejected
+|===
 
 === Language Colors
 
@@ -229,13 +237,15 @@ dotnet publish src/Kitty/Kitty.csproj -c Release -r win-x64 --self-contained tru
 
 image::08-release-pipeline.png[Release Pipeline, width=900]
 
-| Target | Runner | Command | Output |
-|--------|--------|---------|--------|
-| `win-x64` | `windows-latest` | `dotnet publish -r win-x64 -p:PublishSingleFile=true` | `Kitty-win-x64.zip` |
-| `win-arm64` | `windows-latest` | `dotnet publish -r win-arm64 -p:PublishSingleFile=true` | `Kitty-win-arm64.zip` |
-| `linux-x64` | `ubuntu-latest` | `dotnet publish -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-x64.tar.gz` |
-| `linux-arm64` | `ubuntu-latest` | `dotnet publish -r linux-arm64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-arm64.tar.gz` |
-| `macos-arm64` | `macos-14` | `dotnet publish -r osx-arm64 -p:PublishSingleFile=true` + `codesign --deep --force --sign -` | `Kitty-macos-arm64.tar.gz` |
+[cols="1,1,3,1",options="header"]
+|===
+| Target | Runner | Command | Output
+| `win-x64` | `windows-latest` | `dotnet publish -r win-x64 -p:PublishSingleFile=true` | `Kitty-win-x64.zip`
+| `win-arm64` | `windows-latest` | `dotnet publish -r win-arm64 -p:PublishSingleFile=true` | `Kitty-win-arm64.zip`
+| `linux-x64` | `ubuntu-latest` | `dotnet publish -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-x64.tar.gz`
+| `linux-arm64` | `ubuntu-latest` | `dotnet publish -r linux-arm64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-arm64.tar.gz`
+| `macos-arm64` | `macos-14` | `dotnet publish -r osx-arm64 -p:PublishSingleFile=true` + `codesign --deep --force --sign -` | `Kitty-macos-arm64.tar.gz`
+|===
 
 All artifacts uploaded to GitHub Release on tag push (`v*`). `SHA256SUMS.txt` generated for verification.
 
@@ -247,17 +257,21 @@ All artifacts uploaded to GitHub Release on tag push (`v*`). `SHA256SUMS.txt` ge
 
 === Environment Variables
 
-| Variable | Purpose |
-|----------|---------|
-| `KITTY_GITHUB_CLIENT_ID` | OAuth client ID for device flow (required for sign-in) |
+[cols="1,3",options="header"]
+|===
+| Variable | Purpose
+| `KITTY_GITHUB_CLIENT_ID` | OAuth client ID for device flow (required for sign-in)
+|===
 
 === Runtime Files
 
-| Platform | Path |
-|----------|------|
-| Windows | `%AppData%\Kitty\settings.json`, `%AppData%\Kitty\trace.log` |
-| Linux | `~/.config/Kitty/settings.json`, `~/.local/share/Kitty/trace.log` |
-| macOS | `~/Library/Application Support/Kitty/settings.json`, `~/Library/Logs/Kitty/trace.log` |
+[cols="1,2",options="header"]
+|===
+| Platform | Path
+| Windows | `%AppData%\Kitty\settings.json`, `%AppData%\Kitty\trace.log`
+| Linux | `~/.config/Kitty/settings.json`, `~/.local/share/Kitty/trace.log`
+| macOS | `~/Library/Application Support/Kitty/settings.json`, `~/Library/Logs/Kitty/trace.log`
+|===
 
 == Troubleshooting
 
