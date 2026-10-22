@@ -1,0 +1,44 @@
+direction: down
+
+# Refresh Pipeline
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 10
+      "border-radius": 6
+    }
+  }
+}
+
+start: "User clicks Refresh\n(F5 or toolbar)" { shape: "rectangle" }
+check_cache: "Cache fresh?\n(CachedLanguagesJson)" { shape: "diamond" }
+load_langs: "Load languages\n(GitHubLanguages.FetchLiveAsync)" { shape: "rectangle" }
+fetch: "FetchTrendingAsync(range, lang, source)" { shape: "rectangle" }
+check_source: "SourceMode?" { shape: "diamond" }
+api_first: "ApiFirst\nFetchViaSearchApiAsync" { shape: "rectangle" }
+scrape: "ScrapePrimary\nFetchViaScrapeAsync" { shape: "rectangle" }
+normalize: "Normalize -> RepoItem list\nApply LanguageColors fallback" { shape: "rectangle" }
+filter: "Apply filter text\nRebuild VisibleRepos" { shape: "rectangle" }
+update_ui: "Update VisibleRepos\nRaise ListArrived" { shape: "rectangle" }
+error: "Show warning in status bar\n(Source + warning text)" { shape: "parallelogram" }
+
+start -> check_cache
+check_cache -> load_langs: "No"
+check_cache -> fetch: "Yes"
+load_langs -> fetch
+fetch -> check_source
+check_source -> api_first: "ApiFirst"
+check_source -> scrape: "ScrapePrimary"
+api_first -> normalize
+scrape -> normalize
+normalize -> filter
+filter -> update_ui
+api_first -> error: "RateLimit / network error"
+scrape -> error: "parse / network error"
+error -> update_ui

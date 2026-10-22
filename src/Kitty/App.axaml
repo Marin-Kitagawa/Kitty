@@ -1,0 +1,57 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Kitty.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://Kitty/Themes/WorldShared.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- One type system across every world: a serif display face for the
+         wordmark and page title, Lucida for reading, Plex Mono for names,
+         numbers and identifiers. -->
+    <Style Selector="TextBlock">
+      <Setter Property="FontFamily" Value="Lucida Sans Unicode" />
+      <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.display">
+      <Setter Property="FontFamily" Value="avares://Kitty/Assets/Fonts/Italiana-Regular.ttf#Italiana" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.wordmark">
+      <Setter Property="FontFamily" Value="avares://Kitty/Assets/Fonts/Italiana-Regular.ttf#Italiana" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.mono">
+      <Setter Property="FontFamily" Value="avares://Kitty/Assets/Fonts/IBMPlexMono-Regular.ttf#IBM Plex Mono" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.mono_medium">
+      <Setter Property="FontFamily" Value="avares://Kitty/Assets/Fonts/IBMPlexMono-Medium.ttf#IBM Plex Mono Medium" />
+      <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.meta">
+      <Setter Property="FontSize" Value="12.5" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.label">
+      <Setter Property="FontSize" Value="11.5" />
+      <Setter Property="Foreground" Value="{DynamicResource InkFaintBrush}" />
+    </Style>
+  </Application.Styles>
+</Application>

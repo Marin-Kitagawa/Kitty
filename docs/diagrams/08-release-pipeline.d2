@@ -1,0 +1,51 @@
+direction: down
+
+# Release Pipeline (GitHub Actions)
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 10
+      "border-radius": 6
+    }
+  }
+}
+
+trigger_tag: "Push tag v* (e.g. v1.2.3)\nor workflow_dispatch" { shape: "hexagon" }
+
+# Build matrix (6 targets)
+win_x64: "windows-latest\nPublish win-x64\n--self-contained\n-PublishSingleFile\nzip -> Kitty-win-x64.zip" { shape: "rectangle" }
+win_arm64: "windows-latest\nPublish win-arm64\n-PublishSingleFile\nzip -> Kitty-win-arm64.zip" { shape: "rectangle" }
+linux_x64: "ubuntu-latest\nPublish linux-x64\n-PublishSingleFile\nIncludeNativeLibrariesForSelfExtract\ntar.gz -> Kitty-linux-x64.tar.gz" { shape: "rectangle" }
+linux_arm64: "ubuntu-latest\nPublish linux-arm64\n-PublishSingleFile\nIncludeNativeLibrariesForSelfExtract\ntar.gz -> Kitty-linux-arm64.tar.gz" { shape: "rectangle" }
+mac_arm64: "macos-14 (arm64)\nPublish osx-arm64\n-PublishSingleFile\ncodesign --deep --force --sign -\ntar.gz -> Kitty-macos-arm64.tar.gz" { shape: "rectangle" }
+
+# Artifacts
+artifacts: "Artifacts\n6 packages + SHA256SUMS.txt" { shape: "document" }
+
+# Release
+create_release: "Create GitHub Release\nTag = trigger tag\nTitle = Kitty vX.Y.Z\nBody = CHANGELOG excerpt\nUpload all 6 assets\nGenerate SHA256SUMS.txt" { shape: "cylinder" }
+
+trigger_tag -> win_x64
+trigger_tag -> win_arm64
+trigger_tag -> linux_x64
+trigger_tag -> linux_arm64
+trigger_tag -> mac_arm64
+
+win_x64 -> artifacts
+win_arm64 -> artifacts
+linux_x64 -> artifacts
+linux_arm64 -> artifacts
+mac_arm64 -> artifacts
+
+artifacts -> create_release
+
+# Notes
+notes: "Notes\n.NET 10 SDK via setup-dotnet\nWindows: zip (PowerShell Compress-Archive)\nLinux/macOS: tar.gz (tar -czf)\nmacOS: ad-hoc codesign for Gatekeeper\nSHA256SUMS.txt generated from all assets\nAndroid: not included - desktop-only WinExe\nrequires Avalonia.Android port" { shape: "document" }
+
+create_release -> notes

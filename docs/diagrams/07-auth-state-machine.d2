@@ -1,0 +1,37 @@
+direction: right
+
+# Auth State Machine
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 10
+      "border-radius": 6
+    }
+  }
+}
+
+signed_out: "Signed Out\nNo token stored" { shape: "rectangle" }
+device_code: "Device Code\nuser_code shown\nverification_uri opened" { shape: "rectangle" }
+polling: "Polling\nPOST /token every interval" { shape: "rectangle" }
+signed_in: "Signed In\naccess_token + refresh_token\nlogin verified\nTokenExpiresAtUtc set" { shape: "rectangle" }
+refreshing: "Refreshing\nPOST /token grant_type=refresh_token" { shape: "rectangle" }
+error_state: "Error\nrate_limit / invalid_grant / network\nshown in status bar" { shape: "rectangle" }
+
+# Transitions
+signed_out -> device_code: "User clicks Sign in\nGitHubAuth.RequestDeviceCodeAsync"
+device_code -> polling: "Device code received\nStart timer (interval)"
+polling -> polling: "authorization_pending\nwait interval"
+polling -> signed_in: "Success -> store tokens\nProbe /user -> save login"
+polling -> error_state: "slow_down / access_denied / expired_token"
+polling -> signed_out: "User clicks Cancel"
+signed_in -> refreshing: "EnsureFreshTokenAsync\n(ExpiresAtUtc - 5 min)"
+refreshing -> signed_in: "New access_token (+ refresh_token?)\nUpdate expiry"
+refreshing -> error_state: "invalid_grant / revoked\n-> clear tokens -> signed_out"
+error_state -> signed_out: "User dismisses / clicks Sign out"
+signed_in -> signed_out: "User clicks Sign out\nClear all token fields"

@@ -1,0 +1,120 @@
+{
+  "title": "Choose Kitty's new visual world",
+  "question": "A full replacement world. The roll assigned The Risograph Press; two challengers beat it on both axes. Keep the assigned, take a challenger, take the pick, re-roll, or take the category standard.",
+  "seed": "b21af23e",
+  "scope": "direction",
+  "mode": "operate",
+  "grounded": [
+    "language-brand-identity-programmes",
+    "collectible-sticker-album",
+    "risograph-press-zine",
+    "periodic-table-reference-poster",
+    "transit-metro-system-map",
+    "comic-book-panel",
+    "celestial-constellation-atlas"
+  ],
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Risograph Press",
+      "kicker": "THE ROLL",
+      "lineage": "DIY riso print studios, indie zines and gig flyers",
+      "thesis": "GitHub's rising week hand-pulled as a two-ink riso zine: every repo a numbered entry in this issue, this week's top mover overprinted as the cover block.",
+      "palette": ["#F6F1E7", "#17141C", "#3D5A9E", "#FF4E8B"],
+      "materials": ["rough paper", "halftone dot", "deliberate misregistration"],
+      "viewport": "Standard shell — left rail styled as the zine's section list, range + filter bar, the ranked issue list as numbered entries with a language spot-ink tick; a press colophon strip prints source and time.",
+      "signature": "The active language's spot ink floods the selection, and the top mover gets a misregistered poster block pinned above the list.",
+      "risk": "Halftone texture and overprint must never touch the body text; misread, it costs legibility on a list you scan daily.",
+      "raised": [
+        { "from": "challenger-saville-donate", "raise": "The ink set is fixed at three and every color does a real job: language identity, selection state, top-mover mark." },
+        { "from": "challenger-ikeda-donate", "raise": "Every number (stars, forks, rank, age) set only in tabular monospace figures." }
+      ],
+      "wireframe": { "cols": 12, "rows": 10, "regions": [
+        { "label": "section rail (languages)", "x": 0, "y": 0, "w": 2, "h": 10, "accent": true },
+        { "label": "issue header + range + filter", "x": 2, "y": 0, "w": 10, "h": 1 },
+        { "label": "numbered issue list (spot-ink ticks)", "x": 2, "y": 1, "w": 10, "h": 8 },
+        { "label": "press colophon (source/time)", "x": 2, "y": 9, "w": 10, "h": 1 }
+      ] }
+    },
+    {
+      "id": "challenger-character-shelf",
+      "label": "The Character Shelf",
+      "kicker": "CHALLENGER · WINS",
+      "verdict": "wins",
+      "lineage": "character-goods catalogs — a ranked cast on pastel grounds",
+      "thesis": "Every repo a character ranked on a shelf: a name plate, a birthday (its created date) and a one-line personality note (its description), with the language as its ribbon color.",
+      "palette": ["#FBF3F5", "#211E2B", "#FF7BAE", "#8FD0C8"],
+      "materials": ["soft pastel ground", "white keyline", "one saturated ribbon per entry"],
+      "viewport": "Left rail of language 'shelves'; a ranked roster where each entry carries a name plate, a one-line note, and a ribbon whose color is its language; the active entry takes its ribbon.",
+      "signature": "Focus bounces the entry and lights its ribbon; delisted or low-ranked characters print desaturated.",
+      "case": "The one-liner maps straight onto the repo description, and the whole world reads as warm and lived-in — the most on-brand with Kitty's character.",
+      "risk": "Mascot kitsch buries the description unless the personality one-liner is given real space and type weight.",
+      "qualified": true
+    },
+    {
+      "id": "challenger-split-flap",
+      "label": "The Split-Flap Board",
+      "kicker": "CHALLENGER · WINS",
+      "verdict": "wins",
+      "lineage": "split-flap concourse departure boards",
+      "thesis": "The trending list is a departure board: fixed columns (rank, repo, language, stars), and when data refreshes, changed fields cascade like split-flaps while rows rerank in place.",
+      "palette": ["#0E1114", "#E9ECEF", "#F2A93B", "#C0392B"],
+      "materials": ["brushed-steel ground", "matte-black flap cells", "amber delay lamps"],
+      "viewport": "A ruled board with fixed columns and a header; language as the board's 'departure groups'; a status strip printing source, time, and any rate-limit delay in amber.",
+      "signature": "On refresh, only the changed cells flip character-by-character and the row holds an amber highlight until seen — you watch the list rerank in place.",
+      "case": "It is literally a sortable ranked table, so product clarity is native, and rerank-in-place is the honest way to show a list that moved.",
+      "risk": "Flap motion on every refresh becomes noise; it must be bounded to changed cells only, and skipped under reduced motion.",
+      "qualified": true
+    },
+    {
+      "id": "challenger-cassette",
+      "label": "The Cassette Insert",
+      "kicker": "CHALLENGER · COMPETITIVE",
+      "verdict": "competitive",
+      "lineage": "hand-inked cassette j-cards, timed a side at a time",
+      "thesis": "An issue as a mixtape: ranges as Side A (daily) and Side B (week/month), repos as numbered tracks ruled in ballpoint with their running times (repo age).",
+      "palette": ["#F3F0E9", "#20242E", "#2B4C9B", "#C8462F"],
+      "materials": ["lined inlay stock", "ballpoint ink", "brand stripe accent"],
+      "viewport": "A folded j-card: spine as the active language, a tracklist the ranked repos, running times right-aligned; sides flip with a y-axis turn.",
+      "signature": "Flipping ranges is a physical side-flip, and a needle marker runs the active position down the inked tracklist.",
+      "case": "Warm, handmade, and devs of a certain era know it by heart; a tracklist is a genuinely clean list.",
+      "risk": "Shoehorning three ranges into two sides is arbitrary, and the hand-inked type can read as a costume over a data tool."
+    },
+    {
+      "id": "pick",
+      "label": "The Language Programme",
+      "kicker": "IMPECCABLE'S PICK",
+      "lineage": "programming-language brand identity programmes",
+      "thesis": "The shell re-identifies to the active language's own brand: the selected language's official mark and hue take over the header and rail.",
+      "palette": ["#101216", "#F4F5F7", "per-language brand hue"],
+      "materials": ["neutral working ground", "official language marks", "brand-hue shell"],
+      "viewport": "A neutral, instantly legible working screen whose identity is borrowed from the selected language; the language name set in that language's own brand character.",
+      "signature": "Selecting a language morphs the shell's hue and mark — the product's organizing axis becomes the color system.",
+      "risk": "The most on-product, therefore the most familiar landing; per-language brand hues can clash if not mediatized toward one working ground."
+    },
+    {
+      "id": "reroll",
+      "label": "Re-roll",
+      "kicker": "FRESH HAND",
+      "line": "Deals a new assigned direction and a fresh set of challengers; everything shown above is eliminated."
+    },
+    {
+      "id": "canon",
+      "label": "The category standard",
+      "kicker": "PLAYED STRAIGHT",
+      "thesis": "What a trending browser always ships — neutral rail plus ranked list, one blue accent — executed at full craft.",
+      "palette": ["#FFFFFF", "#111827", "#2563EB"],
+      "materials": ["clean grid", "fluent native controls"],
+      "risk": "Indistinguishable from the competition by design."
+    }
+  ],
+  "demoted": [
+    { "id": "challenger-metro-tiles", "verdict": "declined", "line": "flat metro typographic tiles — loses clarity (giant cropped type fights a dense repo list).", "kept": "Total, unhedged color commitment: one accent owns every live state." },
+    { "id": "challenger-orienteering", "verdict": "declined", "line": "orienteering map — a map is not a ranked list.", "kept": "A fixed, meaningful color language where hue is data, never decoration." },
+    { "id": "challenger-botanical", "verdict": "declined", "line": "botanical folio of life-stages — a folio is not a daily list.", "kept": "One exact scale and ground across every entry; calm, ruled rhythm." }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code" },
+  "canon": true,
+  "steer": true
+}

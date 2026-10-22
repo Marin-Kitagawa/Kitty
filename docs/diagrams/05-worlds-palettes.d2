@@ -1,0 +1,102 @@
+direction: right
+
+# Six Visual Worlds
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 12
+      "font-family": "Segoe UI"
+      padding: 8
+      "border-radius": 6
+    }
+  }
+}
+
+# Shared semantic tokens (used by all worlds)
+tokens: "Semantic Tokens\nGround #F6F1E7\nSheet #FBF7EF\nInk #17141C\nLine #D8CDB6\nSakura #FF4E8B\nDeepRose #C9346B\nAmber #F2A93B" { shape: "oval" }
+
+# Riso (light, risograph press)
+riso: "Riso\nRisograph Press\nLight\nGround, Sheet, Ink, Line, Sakura" { shape: "rectangle" }
+riso_fill: "Ground #F6F1E7" { shape: "oval" }
+riso_sheet: "Sheet #FBF7EF" { shape: "oval" }
+riso_ink: "Ink #17141C" { shape: "oval" }
+riso_line: "Line #D8CDB6" { shape: "oval" }
+riso_sakura: "Sakura #FF4E8B" { shape: "oval" }
+
+# Shelf (light, character shelf)
+shelf: "Shelf\nCharacter Shelf\nLight\nWarm neutrals + accent" { shape: "rectangle" }
+shelf_bg: "Ground #F6F1E7" { shape: "oval" }
+shelf_card: "Sheet #FBF7EF" { shape: "oval" }
+shelf_text: "Ink #17141C" { shape: "oval" }
+shelf_accent: "Sakura #FF4E8B" { shape: "oval" }
+
+# Board (dark, split-flap board)
+board: "Board\nSplit-Flap Board\nDark\nHigh contrast monochrome" { shape: "rectangle" }
+board_bg: "Ink #17141C" { shape: "oval" }
+board_card: "Card #1A1820" { shape: "oval" }
+board_text: "Text #F6F1E7" { shape: "oval" }
+board_accent: "Sakura #FF4E8B" { shape: "oval" }
+
+# Tape (light, cassette insert)
+tape: "Tape\nCassette Insert\nLight\nMuted warm tones" { shape: "rectangle" }
+tape_bg: "Ground #F6F1E7" { shape: "oval" }
+tape_card: "Card #F0EBD8" { shape: "oval" }
+tape_text: "Ink #17141C" { shape: "oval" }
+tape_accent: "DeepRose #C9346B" { shape: "oval" }
+
+# Programme (light, language programme)
+programme: "Programme\nLanguage Programme\nLight\nEditorial serif headlines" { shape: "rectangle" }
+prog_bg: "Ground #F6F1E7" { shape: "oval" }
+prog_card: "Sheet #FBF7EF" { shape: "oval" }
+prog_text: "Ink #17141C" { shape: "oval" }
+prog_accent: "Amber #F2A93B" { shape: "oval" }
+
+# Canon (light, category standard)
+canon: "Canon\nCategory Standard\nLight\nClean standard palette" { shape: "rectangle" }
+canon_bg: "Ground #F6F1E7" { shape: "oval" }
+canon_card: "Sheet #FBF7EF" { shape: "oval" }
+canon_text: "Ink #17141C" { shape: "oval" }
+canon_accent: "TypeScript #3178C6" { shape: "oval" }
+
+# Connections
+tokens -> riso
+tokens -> shelf
+tokens -> board
+tokens -> tape
+tokens -> programme
+tokens -> canon
+
+riso -> riso_fill
+riso -> riso_sheet
+riso -> riso_ink
+riso -> riso_line
+riso -> riso_sakura
+
+shelf -> shelf_bg
+shelf -> shelf_card
+shelf -> shelf_text
+shelf -> shelf_accent
+
+board -> board_bg
+board -> board_card
+board -> board_text
+board -> board_accent
+
+tape -> tape_bg
+tape -> tape_card
+tape -> tape_text
+tape -> tape_accent
+
+programme -> prog_bg
+programme -> prog_card
+programme -> prog_text
+programme -> prog_accent
+
+canon -> canon_bg
+canon -> canon_card
+canon -> canon_text
+canon -> canon_accent

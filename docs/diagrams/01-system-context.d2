@@ -1,0 +1,50 @@
+direction: right
+
+# System Context
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 14
+      "font-family": "Segoe UI"
+      padding: 12
+      "border-radius": 6
+    }
+  }
+}
+
+github_api: "GitHub REST API\n(search, user, rate limit)" { style: { fill: "#F6F1E7" } }
+github_web: "GitHub Trending Pages\n(HTML scrape fallback)" { style: { fill: "#F6F1E7" } }
+
+kitty: "Kitty Desktop App\nAvalonia 12.1 / .NET 10" { style: { fill: "#F6F1E7" } }
+
+auth_svc: "GitHubAuth\nOAuth 2.0 Device Flow" { style: { fill: "#FFFFFF" } }
+gh_svc: "GitHubService\nSearch API + HTML Scrape" { style: { fill: "#FFFFFF" } }
+settings_svc: "SettingsService\nJSON in %AppData%/Kitty" { style: { fill: "#FFFFFF" } }
+lang_svc: "LanguageService\nLive fetch + cached list" { style: { fill: "#FFFFFF" } }
+
+main_vm: "MainViewModel\nRepo list, filters, source toggle" { style: { fill: "#F6F1E7" } }
+worlds: "World Themes\n6 palettes, semantic tokens" { style: { fill: "#F6F1E7" } }
+
+main_vm -> gh_svc: "FetchTrendingAsync"
+main_vm -> lang_svc: "LoadLanguagesAsync"
+main_vm -> settings_svc: "Load / Save"
+main_vm -> auth_svc: "SignIn / SignOut / Refresh"
+main_vm -> worlds: "ApplyWorld"
+
+gh_svc -> github_api: "GET /search/repositories"
+gh_svc -> github_web: "GET /trending (scrape)"
+auth_svc -> github_api: "POST /login/device/code + poll"
+auth_svc -> github_api: "POST /login/oauth/access_token"
+
+kitty contains {
+  main_vm
+  gh_svc
+  auth_svc
+  settings_svc
+  lang_svc
+  worlds
+}

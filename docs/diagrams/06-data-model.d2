@@ -1,0 +1,54 @@
+direction: right
+
+# Core Data Model
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 10
+      "border-radius": 6
+    }
+  }
+}
+
+# Enums
+trend_range: "TrendRange\nDaily | Weekly | Monthly" { shape: "diamond" }
+source_mode: "SourceMode\nApiFirst | ScrapePrimary" { shape: "diamond" }
+language_opt: "LanguageOption\nLabel + Slug (Any language = empty)" { shape: "document" }
+
+# Main records
+repo_item: "RepoItem\nOwner, Name, Description\nLanguage, LanguageColor\nStars, Forks, PeriodStars?\nHtmlUrl, CloneUrl, FullName" { shape: "document" }
+trend_result: "TrendResult\nRepos: IReadOnlyList<RepoItem>\nSource: search-api | trending-scrape\nWarning?" { shape: "document" }
+settings: "Settings\nSourceMode, Token?, OAuthClientId?\nRefreshToken?, TokenExpiresAtUtc?\nLogin?, LastLanguage, LastLanguageSlug\nTheme (dusk/dawn), World (riso..canon)\nCachedLanguagesJson?" { shape: "document" }
+device_code: "DeviceCodeInfo\nDeviceCode, UserCode\nVerificationUri, ExpiresInSeconds, IntervalSeconds" { shape: "document" }
+oauth_token: "OAuthToken\nAccessToken, RefreshToken?\nExpiresInSeconds?, Scope?" { shape: "document" }
+login_probe: "LoginProbe\nLogin?, Rejected" { shape: "document" }
+
+# Service usage
+gh_svc: "GitHubService" { shape: "rectangle" }
+auth_svc: "GitHubAuth" { shape: "rectangle" }
+settings_svc: "SettingsService" { shape: "rectangle" }
+lang_svc: "LanguageService" { shape: "rectangle" }
+vm: "MainViewModel" { shape: "rectangle" }
+
+# Relationships
+trend_range -> repo_item: "used in fetch"
+source_mode -> repo_item: "source badge"
+language_opt -> repo_item: "filter"
+repo_item -> trend_result: "contained"
+trend_result -> vm: "ObservableCollection<RepoRowVM>"
+settings -> settings_svc: "persisted JSON"
+settings -> vm: "World, SourceMode, LastLanguage, Theme"
+device_code -> auth_svc: "request"
+oauth_token -> auth_svc: "poll + refresh"
+login_probe -> auth_svc: "verify"
+gh_svc -> repo_item: "FromApiJson / ParseTrendingHtml"
+gh_svc -> trend_result: "FetchTrendingAsync"
+auth_svc -> oauth_token: "PollForTokenAsync / RefreshAsync"
+settings_svc -> settings: "Load/Save"
+lang_svc -> language_opt: "FetchLiveAsync / cached"

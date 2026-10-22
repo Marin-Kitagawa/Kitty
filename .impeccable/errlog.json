@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "5.9.0.0",
+        "fileVersion": "5.9.0-1.26423.113 (e34a38d2ae1fc26406a317517196e55c68ff83ab)",
+        "semanticVersion": "5.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CS0260",
+          "level": "error",
+          "message": "Missing partial modifier on declaration of type 'GitHubLanguages'; another partial declaration of this type exists",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Ahri/Documents/Default%20Project/Kitty/src/Kitty/Services.cs",
+                "region": {
+                  "startLine": 181,
+                  "startColumn": 21,
+                  "endLine": 181,
+                  "endColumn": 36
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "CS0260": {
+          "id": "CS0260",
+          "defaultLevel": "error",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0260)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry",
+              "NotConfigurable"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

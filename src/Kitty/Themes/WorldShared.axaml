@@ -1,0 +1,159 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       KITTY — world structure.
+       Every gradient, overlay and orbital brush below is built from the
+       semantic Color tokens each world dictionary supplies. The same key
+       names across every world let the whole surface repaint instantly
+       when the world is swapped at runtime.
+       ══════════════════════════════════════════════════════════════════ -->
+
+  <SolidColorBrush x:Key="GroundABrush" Color="{DynamicResource GroundA}" />
+  <SolidColorBrush x:Key="GroundBBrush" Color="{DynamicResource GroundB}" />
+  <SolidColorBrush x:Key="GroundCBrush" Color="{DynamicResource GroundC}" />
+
+  <SolidColorBrush x:Key="GlassBrush" Color="{DynamicResource GlassColor}" />
+  <SolidColorBrush x:Key="GlassStrongBrush" Color="{DynamicResource GlassStrongColor}" />
+  <SolidColorBrush x:Key="GlassHoverBrush" Color="{DynamicResource GlassHoverColor}" />
+  <SolidColorBrush x:Key="GlassDeepBrush" Color="{DynamicResource GlassDeepColor}" />
+  <SolidColorBrush x:Key="LineBrush" Color="{DynamicResource LineColor}" />
+  <SolidColorBrush x:Key="LineStrongBrush" Color="{DynamicResource LineStrongColor}" />
+  <SolidColorBrush x:Key="LineFaintBrush" Color="{DynamicResource LineFaintColor}" />
+  <SolidColorBrush x:Key="EdgeBrush" Color="{DynamicResource EdgeColor}" />
+  <SolidColorBrush x:Key="WellBrush" Color="{DynamicResource WellColor}" />
+  <SolidColorBrush x:Key="WellHoverBrush" Color="{DynamicResource WellHoverColor}" />
+
+  <SolidColorBrush x:Key="InkBrush" Color="{DynamicResource InkColor}" />
+  <SolidColorBrush x:Key="InkMutedBrush" Color="{DynamicResource InkMutedColor}" />
+  <SolidColorBrush x:Key="InkFaintBrush" Color="{DynamicResource InkFaintColor}" />
+  <SolidColorBrush x:Key="InkGhostBrush" Color="{DynamicResource InkGhostColor}" />
+  <SolidColorBrush x:Key="OnAccentBrush" Color="{DynamicResource OnAccentColor}" />
+  <SolidColorBrush x:Key="OnChromeBrush" Color="{DynamicResource OnChromeColor}" />
+
+  <SolidColorBrush x:Key="SakuraBrush" Color="{DynamicResource AccentColor}" />
+  <SolidColorBrush x:Key="SakuraDeepBrush" Color="{DynamicResource AccentDeepColor}" />
+  <SolidColorBrush x:Key="SakuraSoftBrush" Color="{DynamicResource AccentSoftColor}" />
+  <SolidColorBrush x:Key="SakuraWashBrush" Color="{DynamicResource AccentWashColor}" />
+  <SolidColorBrush x:Key="LavenderBrush" Color="{DynamicResource SecondColor}" />
+  <SolidColorBrush x:Key="LavenderDeepBrush" Color="{DynamicResource SecondDeepColor}" />
+  <SolidColorBrush x:Key="LavenderSoftBrush" Color="{DynamicResource SecondSoftColor}" />
+  <SolidColorBrush x:Key="LavenderWashBrush" Color="{DynamicResource SecondWashColor}" />
+  <SolidColorBrush x:Key="MintBrush" Color="{DynamicResource ThirdColor}" />
+  <SolidColorBrush x:Key="MintDeepBrush" Color="{DynamicResource ThirdDeepColor}" />
+  <SolidColorBrush x:Key="MintSoftBrush" Color="{DynamicResource ThirdColor}" />
+  <SolidColorBrush x:Key="MintWashBrush" Color="{DynamicResource ThirdWashColor}" />
+  <SolidColorBrush x:Key="GoldBrush" Color="{DynamicResource GoldColor}" />
+  <SolidColorBrush x:Key="GoldDeepBrush" Color="{DynamicResource GoldDeepColor}" />
+  <SolidColorBrush x:Key="GoldWashBrush" Color="{DynamicResource GoldWashColor}" />
+  <SolidColorBrush x:Key="PeachBrush" Color="{DynamicResource ThirdColor}" />
+
+  <SolidColorBrush x:Key="HairlineBrush" Color="{DynamicResource LineColor}" />
+  <SolidColorBrush x:Key="AmberBrush" Color="{DynamicResource AmberColor}" />
+  <SolidColorBrush x:Key="AmberWashBrush" Color="{DynamicResource AmberWashColor}" />
+  <SolidColorBrush x:Key="DangerBrush" Color="{DynamicResource DangerColor}" />
+  <SolidColorBrush x:Key="DangerWashBrush" Color="{DynamicResource DangerWashColor}" />
+  <SolidColorBrush x:Key="LedBrush" Color="{DynamicResource LedColor}" />
+
+  <LinearGradientBrush x:Key="WindowGroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Color="{DynamicResource GroundA}" Offset="0" />
+    <GradientStop Color="{DynamicResource GroundB}" Offset="0.55" />
+    <GradientStop Color="{DynamicResource GroundC}" Offset="1" />
+  </LinearGradientBrush>
+
+  <RadialGradientBrush x:Key="AuroraSakuraBrush" Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource AccentWashColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource AccentWashFaint}" Offset="0.45" />
+    <GradientStop Color="{DynamicResource AccentClear}" Offset="1" />
+  </RadialGradientBrush>
+  <RadialGradientBrush x:Key="AuroraIrisBrush" Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource SecondWashColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource SecondWashFaint}" Offset="0.45" />
+    <GradientStop Color="{DynamicResource SecondClear}" Offset="1" />
+  </RadialGradientBrush>
+  <RadialGradientBrush x:Key="AuroraMintBrush" Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource ThirdWashColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource ThirdWashFaint}" Offset="0.5" />
+    <GradientStop Color="{DynamicResource ThirdClear}" Offset="1" />
+  </RadialGradientBrush>
+  <RadialGradientBrush x:Key="AuroraPeachBrush" Center="50%,50%" GradientOrigin="50%,50%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource Accent4Wash}" Offset="0" />
+    <GradientStop Color="{DynamicResource Accent4WashFaint}" Offset="0.5" />
+    <GradientStop Color="{DynamicResource Accent4Clear}" Offset="1" />
+  </RadialGradientBrush>
+
+  <RadialGradientBrush x:Key="VignetteBrush" Center="50%,44%" GradientOrigin="50%,44%" RadiusX="74%" RadiusY="74%">
+    <GradientStop Color="{DynamicResource VignetteInnerColor}" Offset="0.42" />
+    <GradientStop Color="{DynamicResource VignetteOuterColor}" Offset="1" />
+  </RadialGradientBrush>
+
+  <LinearGradientBrush x:Key="HearthBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Color="{DynamicResource HearthAColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource HearthBColor}" Offset="0.72" />
+    <GradientStop Color="{DynamicResource HearthCColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="PillBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Color="{DynamicResource PillAColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource PillBColor}" Offset="0.55" />
+    <GradientStop Color="{DynamicResource PillCColor}" Offset="1" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="PillTextBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Color="{DynamicResource PillTextAColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource PillTextBColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="MedallionBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Color="{DynamicResource MedallionAColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource MedallionBColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="LineGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+    <GradientStop Color="{DynamicResource AccentClear}" Offset="0" />
+    <GradientStop Color="{DynamicResource AccentWashColor}" Offset="0.22" />
+    <GradientStop Color="{DynamicResource SecondWashColor}" Offset="0.62" />
+    <GradientStop Color="{DynamicResource ThirdWashFaint}" Offset="0.85" />
+    <GradientStop Color="{DynamicResource ThirdClear}" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="GlassFillBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Color="{DynamicResource GlassFillTop}" Offset="0" />
+    <GradientStop Color="{DynamicResource GlassFillBottom}" Offset="1" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="SheenBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+    <GradientStop Color="{DynamicResource SheenClear}" Offset="0" />
+    <GradientStop Color="{DynamicResource SheenClear}" Offset="0.4" />
+    <GradientStop Color="{DynamicResource SheenColor}" Offset="0.5" />
+    <GradientStop Color="{DynamicResource SheenClear}" Offset="0.6" />
+    <GradientStop Color="{DynamicResource SheenClear}" Offset="1" />
+  </LinearGradientBrush>
+
+  <RadialGradientBrush x:Key="HoverBloomBrush" Center="0%,50%" GradientOrigin="0%,50%" RadiusX="70%" RadiusY="140%">
+    <GradientStop Color="{DynamicResource HoverBloomColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource AccentClear}" Offset="1" />
+  </RadialGradientBrush>
+
+  <LinearGradientBrush x:Key="SkullBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+    <GradientStop Color="{DynamicResource SkullColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource SkullStrongColor}" Offset="0.5" />
+    <GradientStop Color="{DynamicResource SkullColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <RadialGradientBrush x:Key="OrbBrush" Center="50%,42%" GradientOrigin="50%,42%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource AccentSoftColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource AccentWashFaint}" Offset="0.55" />
+    <GradientStop Color="{DynamicResource AccentClear}" Offset="1" />
+  </RadialGradientBrush>
+  <RadialGradientBrush x:Key="OrbMintBrush" Center="50%,42%" GradientOrigin="50%,42%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource ThirdColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource ThirdWashFaint}" Offset="0.55" />
+    <GradientStop Color="{DynamicResource ThirdClear}" Offset="1" />
+  </RadialGradientBrush>
+  <RadialGradientBrush x:Key="OrbGoldBrush" Center="50%,42%" GradientOrigin="50%,42%" RadiusX="50%" RadiusY="50%">
+    <GradientStop Color="{DynamicResource GoldColor}" Offset="0" />
+    <GradientStop Color="{DynamicResource GoldWashColor}" Offset="0.55" />
+    <GradientStop Color="{DynamicResource GoldClear}" Offset="1" />
+  </RadialGradientBrush>
+
+</ResourceDictionary>

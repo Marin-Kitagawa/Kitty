@@ -1,0 +1,37 @@
+direction: down
+
+# UI Anatomy (MainWindow)
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 8
+      "border-radius": 6
+    }
+  }
+}
+
+window: "MainWindow\nCustom chrome (WindowDecoration=None)" { shape: "rectangle" }
+
+titlebar: "Title Bar\nLogo (30x30) | App name | Min / Max / Close (CapButton 46x44)" { shape: "rectangle" }
+rail: "Left Rail\nWorld switcher (Ctrl+W)\nRange selector (Daily/Weekly/Monthly)\nSource toggle (API / Scrape)\nLanguage combobox + filter" { shape: "rectangle" }
+sheet: "Repo Sheet\nObservableCollection<RepoRowViewModel>\nColumns: Rank | Stars | Forks | Language pill | Description | Owner/Name link" { shape: "rectangle" }
+status: "Status Bar\nSource badge (search-api / trending-scrape) | Warning text | Signed-in avatar" { shape: "rectangle" }
+settings_overlay: "Settings Overlay (Esc to close)\nGitHub auth (device flow)\nToken display / copy\nTheme (Dawn/Dusk)\nWorld selector (6 cards)\nLanguage cache clear" { shape: "rectangle" }
+
+window contains {
+  titlebar
+  rail
+  sheet
+  status
+  settings_overlay
+}
+
+rail -> sheet: "F5 / toolbar Refresh"
+sheet -> status: "Source badge updates"
+titlebar -> settings_overlay: "Gear icon click"

@@ -1,0 +1,129 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══ Kitty world: The Language Programme  (id: programme, Light) ═══ -->
+
+  <Color x:Key="SystemAccentColor">#FF4C6EF5</Color>
+  <Color x:Key="SystemAccentColorDark1">#FF4361D8</Color>
+  <Color x:Key="SystemAccentColorDark2">#FF3A54BA</Color>
+  <Color x:Key="SystemAccentColorDark3">#FF31469D</Color>
+  <Color x:Key="SystemAccentColorLight1">#FF6C88F7</Color>
+  <Color x:Key="SystemAccentColorLight2">#FF8CA2F9</Color>
+  <Color x:Key="SystemAccentColorLight3">#FFADBCFA</Color>
+
+  <!-- ground -->
+  <Color x:Key="GroundA">#F8F9FB</Color>
+  <Color x:Key="GroundB">#EFF2F7</Color>
+  <Color x:Key="GroundC">#E8EDF5</Color>
+
+  <!-- aurora identity -->
+  <SolidColorBrush x:Key="AuroraSakuraColor" Color="#4C6EF5" />
+  <SolidColorBrush x:Key="AuroraIrisColor" Color="#12B886" />
+  <SolidColorBrush x:Key="AuroraMintColor" Color="#F59F00" />
+  <SolidColorBrush x:Key="AuroraPeachColor" Color="#7048E8" />
+
+  <!-- glass / surfaces -->
+  <Color x:Key="GlassColor">#B3FFFFFF</Color>
+  <Color x:Key="GlassStrongColor">#D9FFFFFF</Color>
+  <Color x:Key="GlassHoverColor">#FFFFFFFF</Color>
+  <Color x:Key="GlassDeepColor">#1A000000</Color>
+  <Color x:Key="GlassFillTop">#1FFFFFFF</Color>
+  <Color x:Key="GlassFillBottom">#08FFFFFF</Color>
+  <Color x:Key="LineColor">#E1E6EF</Color>
+  <Color x:Key="LineStrongColor">#C9D2E0</Color>
+  <Color x:Key="LineFaintColor">#EDF1F7</Color>
+  <Color x:Key="EdgeColor">#FFFFFF</Color>
+  <Color x:Key="WellColor">#FFFFFF</Color>
+  <Color x:Key="WellHoverColor">#FFFFFF</Color>
+
+  <!-- ink -->
+  <Color x:Key="InkColor">#1B2130</Color>
+  <Color x:Key="InkMutedColor">#5A6478</Color>
+  <Color x:Key="InkFaintColor">#8A93A6</Color>
+  <Color x:Key="InkGhostColor">#C2C9D6</Color>
+  <Color x:Key="OnAccentColor">#FFFFFF</Color>
+  <Color x:Key="OnChromeColor">#FFFFFF</Color>
+
+  <!-- accents -->
+  <Color x:Key="AccentColor">#4C6EF5</Color>
+  <Color x:Key="AccentDeepColor">#3B5BDB</Color>
+  <Color x:Key="AccentSoftColor">#6B85F7</Color>
+  <Color x:Key="AccentWashColor">#2E4C6EF5</Color>
+  <Color x:Key="AccentWashFaint">#164C6EF5</Color>
+  <Color x:Key="AccentClear">#004C6EF5</Color>
+  <Color x:Key="SecondColor">#12B886</Color>
+  <Color x:Key="SecondDeepColor">#0CA678</Color>
+  <Color x:Key="SecondSoftColor">#38D9A9</Color>
+  <Color x:Key="SecondWashColor">#2E12B886</Color>
+  <Color x:Key="SecondWashFaint">#1412B886</Color>
+  <Color x:Key="SecondClear">#0012B886</Color>
+  <Color x:Key="ThirdColor">#F59F00</Color>
+  <Color x:Key="ThirdDeepColor">#E67700</Color>
+  <Color x:Key="ThirdWashColor">#2EF59F00</Color>
+  <Color x:Key="ThirdWashFaint">#14F59F00</Color>
+  <Color x:Key="ThirdClear">#00F59F00</Color>
+  <Color x:Key="Accent4Wash">#247048E8</Color>
+  <Color x:Key="Accent4WashFaint">#127048E8</Color>
+  <Color x:Key="Accent4Clear">#007048E8</Color>
+  <Color x:Key="GoldColor">#C79A2E</Color>
+  <Color x:Key="GoldDeepColor">#A8842A</Color>
+  <Color x:Key="GoldWashColor">#24C79A2E</Color>
+  <Color x:Key="GoldClear">#00C79A2E</Color>
+
+  <!-- signals -->
+  <Color x:Key="AmberColor">#B45309</Color>
+  <Color x:Key="AmberWashColor">#24B45309</Color>
+  <Color x:Key="DangerColor">#E03131</Color>
+  <Color x:Key="DangerWashColor">#24E03131</Color>
+  <Color x:Key="LedColor">#12B886</Color>
+
+  <!-- atmosphere -->
+  <Color x:Key="VignetteInnerColor">#00FFFFFF</Color>
+  <Color x:Key="VignetteOuterColor">#14101828</Color>
+  <Color x:Key="HearthAColor">#00000000</Color>
+  <Color x:Key="HearthBColor">#00000000</Color>
+  <Color x:Key="HearthCColor">#00000000</Color>
+  <Color x:Key="PillAColor">#6B85F7</Color>
+  <Color x:Key="PillBColor">#4C6EF5</Color>
+  <Color x:Key="PillCColor">#3B5BDB</Color>
+  <Color x:Key="PillTextAColor">#FFFFFF</Color>
+  <Color x:Key="PillTextBColor">#FFFFFF</Color>
+  <Color x:Key="MedallionAColor">#16000000</Color>
+  <Color x:Key="MedallionBColor">#08000000</Color>
+  <Color x:Key="SheenColor">#8CFFFFFF</Color>
+  <Color x:Key="SheenClear">#00FFFFFF</Color>
+  <Color x:Key="HoverBloomColor">#334C6EF5</Color>
+  <Color x:Key="SkullColor">#0F000000</Color>
+  <Color x:Key="SkullStrongColor">#1C000000</Color>
+
+  <!-- type: one voice per world, same token names everywhere -->
+  <FontFamily x:Key="WordmarkFont">avares://Kitty/Assets/Fonts/Ballet.ttf#Ballet 28pt</FontFamily>
+  <FontFamily x:Key="SerifFont">avares://Kitty/Assets/Fonts/Italiana-Regular.ttf#Italiana</FontFamily>
+  <FontFamily x:Key="TitleFont">avares://Kitty/Assets/Fonts/Marcellus-Regular.ttf#Marcellus</FontFamily>
+  <FontFamily x:Key="SignatureFont">avares://Kitty/Assets/Fonts/Rochester.ttf#Rochester</FontFamily>
+  <FontFamily x:Key="ScriptFont">avares://Kitty/Assets/Fonts/Ruthie.ttf#Ruthie</FontFamily>
+  <FontFamily x:Key="FancyFont">avares://Kitty/Assets/Fonts/Stalemate.ttf#Stalemate</FontFamily>
+  <FontFamily x:Key="DisplayFont">avares://Kitty/Assets/Fonts/GreyQo.ttf#Grey Qo</FontFamily>
+  <FontFamily x:Key="RoundedFont">avares://Kitty/Assets/Fonts/GreyQo.ttf#Grey Qo</FontFamily>
+  <FontFamily x:Key="NumeralFont">avares://Kitty/Assets/Fonts/MeaCulpa.ttf#Mea Culpa</FontFamily>
+  <FontFamily x:Key="MonoFont">avares://Kitty/Assets/Fonts/IBMPlexMono-Regular.ttf#IBM Plex Mono</FontFamily>
+  <FontFamily x:Key="MonoMediumFont">avares://Kitty/Assets/Fonts/IBMPlexMono-Medium.ttf#IBM Plex Mono Medium</FontFamily>
+  <FontFamily x:Key="BodyFont">Lucida Sans Unicode</FontFamily>
+
+  <!-- density + character -->
+  <CornerRadius x:Key="CardRadius">14</CornerRadius>
+  <CornerRadius x:Key="ChipRadius">999</CornerRadius>
+  <CornerRadius x:Key="FieldRadius">999</CornerRadius>
+  <Thickness x:Key="CardPad">20,15,15,15</Thickness>
+  <x:Double x:Key="RowSpace">8</x:Double>
+  <x:Double x:Key="HeaderSize">34</x:Double>
+  <x:Double x:Key="DisplaySize">34</x:Double>
+  <x:Double x:Key="TitleSize">22</x:Double>
+  <x:Double x:Key="BodySize">12.5</x:Double>
+  <x:Double x:Key="MicroSize">9.5</x:Double>
+  <x:Double x:Key="MicroTrack">1.4</x:Double>
+  <x:Double x:Key="AtmosphereOpacity">0.35</x:Double>
+  <BoxShadows x:Key="CardShadow">0 12 30 -22 #33000000</BoxShadows>
+  <BoxShadows x:Key="AccentGlow">0 0 0 0 #00000000</BoxShadows>
+
+</ResourceDictionary>

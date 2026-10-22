@@ -1,0 +1,326 @@
+= Kitty
+:toc: left
+:toclevels: 3
+:icons: font
+:source-highlighter: rouge
+:imagesdir: docs/diagrams
+:sectanchors:
+:sectlinks:
+
+// ============================================================
+// KITTY — GitHub Trending Desktop Client
+// ============================================================
+A cross-platform desktop application for browsing GitHub trending repositories with a distinctive editorial design language. Built with Avalonia 12.1 and .NET 10.
+
+== Overview
+
+Kitty is a native desktop client for exploring GitHub trending repositories. It presents a curated, ranked view of trending projects with support for:
+
+* Multiple time ranges (daily, weekly, monthly)
+* Language filtering with live language list from GitHub
+* Two data sources: Search API (primary) and HTML scrape (fallback/opt-in)
+* OAuth 2.0 Device Flow authentication for higher rate limits
+* Six interchangeable visual "worlds" — each a complete color palette
+* Custom window chrome with drag/move/resize handling
+* Persistent settings (world, language, theme, source mode) stored locally
+
+The application targets Windows, Linux, and macOS from a single codebase. No Electron — pure Avalonia native rendering.
+
+=== Screenshot
+
+// TODO: Add actual screenshot
+// image::docs/diagrams/screenshot.png[Kitty main window, width=800]
+
+== Architecture
+
+Kitty follows a layered architecture with clear separation between UI, services, and data models.
+
+image::01-system-context.png[System Context Diagram, width=900]
+
+=== Component Diagram
+
+The system consists of:
+
+* <<gh_svc,GitHubService>> — Core data service. Implements two retrieval strategies:
+  * **Search API** (`FetchViaSearchApiAsync`): Uses GitHub REST API `/search/repositories` with `q=stars:>0 sort:stars-desc` and time-range filters. Handles pagination, rate limits, and response normalization.
+  * **Trending Scrape** (`FetchViaScrapeAsync`): Fetches `https://github.com/trending` HTML and parses repository cards via regex. Used when user explicitly selects `ScrapePrimary` mode or as fallback.
+* <<auth_svc,GitHubAuth>> — OAuth 2.0 Device Flow implementation. Handles device code request, polling, token exchange, refresh, and user probe.
+* <<settings_svc,SettingsService>> — JSON persistence to `%AppData%/Kitty/settings.json`. Loads on startup, saves on change.
+* <<lang_svc,LanguageService>> — Fetches live language list from GitHub trending page dropdown, caches to settings.
+* <<main_vm,MainViewModel>> — UI state holder. Owns `ObservableCollection<RepoRowViewModel>`, filter logic, source mode toggle, and coordinates refresh cycle.
+* <<worlds,Worlds>> — Six semantic color palettes. Each world is a ResourceDictionary swapped at runtime. Only color changes; typography, density, layout, motion remain identical.
+
+=== Data Flow
+
+image::02-refresh-pipeline.png[Refresh Pipeline, width=900]
+
+1. User triggers refresh (F5, toolbar button, or range/language/source change)
+2. Cache validity checked (`CachedLanguagesJson` timestamp)
+3. Languages loaded if stale
+4. `FetchTrendingAsync` dispatched with current `TrendRange`, `LanguageOption`, `SourceMode`
+5. Source mode branches:
+   * **ApiFirst** → `FetchViaSearchApiAsync` → GitHub Search API
+   * **ScrapePrimary** → `FetchViaScrapeAsync` → HTML scrape
+6. Results normalized to `RepoItem` list, `LanguageColors` fallback applied
+7. Filter text applied, `VisibleRepos` rebuilt
+8. `ListArrived` event raised → UI updates
+9. Errors surfaced in status bar with source badge (`search-api` / `trending-scrape`)
+
+== Authentication
+
+Kitty uses GitHub's **OAuth 2.0 Device Authorization Grant** (RFC 8628) — no embedded browser, no local callback server.
+
+image::03-oauth-device-flow.png[OAuth Device Flow, width=900]
+
+=== Flow Steps
+
+1. User clicks "Sign in with GitHub"
+2. App requests device code: `POST https://github.com/login/device/code` with `client_id` (+ optional `scope`)
+3. GitHub returns `{ device_code, user_code, verification_uri, expires_in, interval }`
+4. App displays `user_code` and opens `verification_uri` in system browser
+5. App polls `POST https://github.com/login/oauth/access_token` with `device_code` + `grant_type=urn:ietf:params:oauth:grant-type:device_code` every `interval` seconds
+6. On success: receives `{ access_token, refresh_token?, expires_in, scope }`
+7. App probes `GET https://api.github.com/user` to verify login and fetch `login`
+8. Token, refresh token, expiry, and login saved to settings
+
+=== Token Refresh
+
+* Background timer checks `TokenExpiresAtUtc` — 5 minutes before expiry, `EnsureFreshTokenAsync` triggers
+* Refresh uses `grant_type=refresh_token` with stored `refresh_token`
+* New access token (and optionally new refresh token) stored, expiry updated
+* On `invalid_grant` or revocation: tokens cleared, user returned to signed-out state
+
+=== Security Notes
+
+* Tokens stored in plaintext JSON at `%AppData%\Kitty\settings.json` — no DPAPI, no Keychain, no libsecret integration
+* Client ID sourced from environment variable `KITTY_GITHUB_CLIENT_ID` at runtime (not embedded)
+* No telemetry, no crash reporting, no network requests beyond declared GitHub endpoints
+
+== User Interface
+
+Kitty uses a **custom window chrome** (`WindowDecoration=None`) with full drag/move/resize handling via `BeginMoveDrag`/`BeginResizeDrag`. Title bar hosts logo, app name, and three caption buttons (Min/Max/Close) styled as `CapButton` (46×44, content-centered).
+
+image::04-ui-anatomy.png[UI Anatomy, width=900]
+
+=== Layout Regions
+
+| Region | Description |
+|--------|-------------|
+| **Title Bar** | Logo (30×30), app name, caption buttons (Min/Max/Close). Double-click maximizes. |
+| **Left Rail** | World switcher (Ctrl+W), Range selector (Daily/Weekly/Monthly), Source toggle (API/Scrape), Language combobox with live filter. |
+| **Repo Sheet** | Virtualized `ItemsRepeater` bound to `VisibleRepos`. Columns: Rank, ★ Stars, Forks, Language pill (color-coded), Description, Owner/Name link. Click opens repo in browser; Ctrl+C copies clone URL. |
+| **Status Bar** | Source badge (`search-api` / `trending-scrape`), warning text, signed-in avatar with tooltip. |
+| **Settings Overlay** | Esc to close. GitHub auth (device flow), token display/copy, Theme (Dawn/Dusk), World selector (6 cards), Language cache clear. |
+
+=== Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `F5` | Refresh |
+| `Ctrl+W` | Next world |
+| `Ctrl+G` | Open GitHub trending page |
+| `Ctrl+F` / `F3` | Focus language filter |
+| `Escape` | Close settings overlay |
+| `W` / `D` | Window drag (when not in text input) |
+
+=== Visual Worlds
+
+Kitty ships with six **worlds** — complete semantic color palettes. A world only supplies color; typography, density, layout, and motion are identical across worlds. Switching is instant (ResourceDictionary swap + `RequestedThemeVariant`).
+
+image::05-worlds-palettes.png[World Palettes, width=900]
+
+| World | ID | Variant | Character |
+|-------|-----|---------|-----------|
+| **Risograph Press** | `riso` | Light | Warm paper, sakura accent |
+| **Character Shelf** | `shelf` | Light | Warm neutrals, sakura accent |
+| **Split-Flap Board** | `board` | **Dark** | High-contrast monochrome |
+| **Cassette Insert** | `tape` | Light | Muted warm, deep rose accent |
+| **Language Programme** | `programme` | Light | Editorial serif headlines, amber accent |
+| **Category Standard** | `canon` | Light | Clean standard, TypeScript blue accent |
+
+=== Semantic Tokens (Shared)
+
+All worlds derive from the same seven semantic tokens — only the concrete hex values change:
+
+* **Ground** `#F6F1E7` — Page/card background
+* **Sheet** `#FBF7EF` — Elevated surfaces, inputs
+* **Ink** `#17141C` — Primary text
+* **Line** `#D8CDB6` — Borders, dividers
+* **Sakura** `#FF4E8B` — Primary accent (buttons, links, focus)
+* **DeepRose** `#C9346B` — Secondary accent (hover, active)
+* **Amber** `#F2A93B` — Warning/pending accent
+
+Typography is constant across worlds:
+* **Display** — Italiana (variable, `Italiana-Variable.ttf`)
+* **Body** — Lucida Sans Unicode (system font)
+* **Code/Mono** — IBM Plex Mono (`IBMPlexMono-Regular.ttf`, `IBMPlexMono-SemiBold.ttf`)
+
+== Data Model
+
+image::06-data-model.png[Core Data Model, width=900]
+
+=== Key Types
+
+| Type | Description |
+|------|-------------|
+| `TrendRange` | `Daily` \| `Weekly` \| `Monthly` |
+| `SourceMode` | `ApiFirst` (default) \| `ScrapePrimary` (opt-in) |
+| `LanguageOption` | Label + Slug (`"Any language"` = empty slug) |
+| `RepoItem` | Owner, Name, Description, Language, LanguageColor, Stars, Forks, PeriodStars?, HtmlUrl, CloneUrl, FullName |
+| `TrendResult` | `Repos: IReadOnlyList<RepoItem>`, `Source: "search-api" \| "trending-scrape"`, `Warning?` |
+| `Settings` | SourceMode, Token?, OAuthClientId?, RefreshToken?, TokenExpiresAtUtc?, Login?, LastLanguage, LastLanguageSlug, Theme (`dusk`/`dawn`), World (`riso`..`canon`), CachedLanguagesJson? |
+| `DeviceCodeInfo` | DeviceCode, UserCode, VerificationUri, ExpiresInSeconds, IntervalSeconds |
+| `OAuthToken` | AccessToken, RefreshToken?, ExpiresInSeconds?, Scope? |
+| `LoginProbe` | Login?, Rejected |
+
+=== Language Colors
+
+`LanguageColors.Map` provides a curated dictionary of 30+ GitHub Linguist colors (e.g., TypeScript `#3178c6`, Rust `#dea584`, Python `#3572A5`). Used as fallback when source doesn't provide a color.
+
+== Settings & Persistence
+
+Settings stored as JSON at `%AppData%\Kitty\settings.json` (Windows) / `~/.config/Kitty/settings.json` (Linux) / `~/Library/Application Support/Kitty/settings.json` (macOS).
+
+=== Schema (abridged)
+
+```json
+{
+  "SourceMode": "ApiFirst",
+  "Token": null,
+  "OAuthClientId": null,
+  "RefreshToken": null,
+  "TokenExpiresAtUtc": null,
+  "Login": null,
+  "LastLanguage": "Any language",
+  "LastLanguageSlug": "",
+  "Theme": "dusk",
+  "World": "riso",
+  "CachedLanguagesJson": null
+}
+```
+
+=== Cached Languages
+
+`GitHubLanguages.FetchLiveAsync` scrapes the language dropdown from `https://github.com/trending` on first use or when cache missing. Result cached in `CachedLanguagesJson` (expires after 24h). Fallback list (`GitHubLanguages.Fallback`) used offline.
+
+== Build & Release
+
+=== Prerequisites
+
+* .NET 10 SDK (10.0.401+)
+* Avalonia 12.1.3
+* Windows: .NET Desktop workload
+* Linux: `libgtk-3-0`, `libwebkit2gtk-4.1-0` (runtime)
+* macOS: Xcode Command Line Tools (for codesign)
+
+=== Local Build
+
+```powershell
+# Debug
+dotnet build src/Kitty/Kitty.csproj -c Debug
+
+# Release (single-file, self-contained)
+dotnet publish src/Kitty/Kitty.csproj -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+  -p:DebugType=None -o artifacts/win-x64
+```
+
+=== Cross-Platform Publish Matrix
+
+image::08-release-pipeline.png[Release Pipeline, width=900]
+
+| Target | Runner | Command | Output |
+|--------|--------|---------|--------|
+| `win-x64` | `windows-latest` | `dotnet publish -r win-x64 -p:PublishSingleFile=true` | `Kitty-win-x64.zip` |
+| `win-arm64` | `windows-latest` | `dotnet publish -r win-arm64 -p:PublishSingleFile=true` | `Kitty-win-arm64.zip` |
+| `linux-x64` | `ubuntu-latest` | `dotnet publish -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-x64.tar.gz` |
+| `linux-arm64` | `ubuntu-latest` | `dotnet publish -r linux-arm64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true` | `Kitty-linux-arm64.tar.gz` |
+| `macos-arm64` | `macos-14` | `dotnet publish -r osx-arm64 -p:PublishSingleFile=true` + `codesign --deep --force --sign -` | `Kitty-macos-arm64.tar.gz` |
+
+All artifacts uploaded to GitHub Release on tag push (`v*`). `SHA256SUMS.txt` generated for verification.
+
+=== Android
+
+**Not supported.** Kitty is a desktop-only `WinExe` with custom window chrome and Avalonia desktop rendering. An Android port would require a separate Avalonia.Android headless project, mobile-adaptive layout, and touch-first interaction model — not in scope.
+
+== Configuration
+
+=== Environment Variables
+
+| Variable | Purpose |
+|----------|---------|
+| `KITTY_GITHUB_CLIENT_ID` | OAuth client ID for device flow (required for sign-in) |
+
+=== Runtime Files
+
+| Platform | Path |
+|----------|------|
+| Windows | `%AppData%\Kitty\settings.json`, `%AppData%\Kitty\trace.log` |
+| Linux | `~/.config/Kitty/settings.json`, `~/.local/share/Kitty/trace.log` |
+| macOS | `~/Library/Application Support/Kitty/settings.json`, `~/Library/Logs/Kitty/trace.log` |
+
+== Troubleshooting
+
+=== Sign-in Fails / "authorization_pending" Loops
+
+* Ensure `KITTY_GITHUB_CLIENT_ID` is set and valid
+* Check system clock (token expiry validation is time-sensitive)
+* Verify network allows `github.com` and `api.github.com`
+
+=== Rate Limited (403 / RateLimitException)
+
+* Sign in — authenticated requests get 5,000 req/hr vs 60 unauthenticated
+* Wait for reset (shown in status bar)
+
+=== Trending Scrape Returns Empty
+
+* GitHub HTML structure changed — regex patterns in `GitHubService.ParseTrendingHtml` may need update
+* Fallback to `ApiFirst` mode
+
+=== Linux: "Could not load libgtk-3" / "Could not load libwebkit2gtk"
+
+```bash
+# Ubuntu/Debian
+sudo apt install libgtk-3-0 libwebkit2gtk-4.1-0
+
+# Arch
+sudo pacman -S gtk3 webkit2gtk-4.1
+
+# Fedora
+sudo dnf install gtk3 webkit2gtk-4.1
+```
+
+=== macOS: "App is damaged and can't be opened"
+
+* Ad-hoc signing: `codesign --deep --force --sign - Kitty.app`
+* Or: `xattr -cr Kitty.app` to clear quarantine attribute
+
+== Contributing
+
+1. Fork, branch (`feat/…`, `fix/…`, `docs/…`)
+2. Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`)
+3. `dotnet build` + `dotnet format` before push
+4. PR with description + screenshots for UI changes
+
+=== Code Style
+
+* `dotnet format` (EditorConfig enforced)
+* `nullable: enable` project-wide
+* No `async void` except event handlers
+* Prefer `ObservableCollection<T>` + `CommunityToolkit.Mvvm` `[ObservableProperty]`
+* Regex compiled (`RegexOptions.Compiled`), pre-compiled via `GeneratedRegexAttribute`
+
+== License
+
+MIT License — see `LICENSE` file.
+
+== Acknowledgments
+
+* Avalonia UI team — cross-platform native rendering
+* GitHub — trending data and OAuth APIs
+* IBM Plex Mono / Italiana — typography
+* CommunityToolkit.Mvvm — MVVM boilerplate reduction
+
+// ============================================================
+// END
+// ============================================================

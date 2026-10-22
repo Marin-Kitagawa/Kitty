@@ -1,0 +1,824 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Kitty"
+        x:Class="Kitty.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Kitty — GitHub trending"
+        Icon="/Assets/kitty.png" WindowDecorations="BorderOnly"
+        Width="1280" Height="840" MinWidth="1040" MinHeight="680"
+        Background="{DynamicResource GroundABrush}"
+        TransparencyBackgroundFallback="#FFF6F1E7"
+        FontFamily="{DynamicResource BodyFont}">
+
+  <Window.Resources>
+
+    <!-- ── window controls: flat, 46×44, no decoration until hovered ── -->
+    <ControlTheme x:Key="CapButton" TargetType="Button">
+      <Setter Property="Width" Value="46" />
+      <Setter Property="Height" Value="44" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      </Style>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── 28px icon action ── -->
+    <ControlTheme x:Key="IconButton" TargetType="Button">
+      <Setter Property="Width" Value="28" />
+      <Setter Property="Height" Value="28" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}"
+                  CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      </Style>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── quiet outlined button ── -->
+    <ControlTheme x:Key="FlatButton" TargetType="Button">
+      <Setter Property="Padding" Value="10,6" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+      <Style Selector="^:pressed /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource LineFaintBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── the one primary action on the screen ── -->
+    <ControlTheme x:Key="PrimaryButton" TargetType="Button">
+      <Setter Property="Padding" Value="13,7" />
+      <Setter Property="Background" Value="{DynamicResource InkBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource GroundABrush}" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Opacity" Value="0.86" />
+      </Style>
+      <Style Selector="^:pressed /template/ Border#PART_Bg">
+        <Setter Property="Opacity" Value="0.72" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── segmented option ── -->
+    <ControlTheme x:Key="SegRadio" TargetType="RadioButton">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+      <Setter Property="FontSize" Value="11.5" />
+      <Setter Property="Padding" Value="4,5" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}" CornerRadius="6"
+                  Padding="{TemplateBinding Padding}">
+            <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" FontSize="{TemplateBinding FontSize}"
+                       Foreground="{TemplateBinding Foreground}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+      <Style Selector="^:checked">
+        <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      </Style>
+      <Style Selector="^:checked /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── world chip (settings) ── -->
+    <ControlTheme x:Key="ChipRadio" TargetType="RadioButton">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Padding" Value="10,5" />
+      <Setter Property="Margin" Value="0,0,6,6" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}" CornerRadius="7"
+                  BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
+                  Padding="{TemplateBinding Padding}">
+            <TextBlock Text="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}"
+                       Foreground="{TemplateBinding Foreground}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+      <Style Selector="^:checked">
+        <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      </Style>
+      <Style Selector="^:checked /template/ Border#PART_Bg">
+        <Setter Property="BorderBrush" Value="{DynamicResource InkMutedBrush}" />
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── language row ── -->
+    <ControlTheme x:Key="LangRow" TargetType="ListBoxItem">
+      <Setter Property="Height" Value="32" />
+      <Setter Property="Padding" Value="9,0" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="FocusAdorner" Value="{x:Null}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}"
+                  CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="Stretch" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+      <Style Selector="^:selected">
+        <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      </Style>
+      <Style Selector="^:selected /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource WellHoverBrush}" />
+      </Style>
+    </ControlTheme>
+
+    <!-- ── table row ── -->
+    <ControlTheme x:Key="RepoRow" TargetType="ListBoxItem">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="FocusAdorner" Value="{x:Null}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="PART_Bg" Background="{TemplateBinding Background}">
+            <Border Padding="26,0" MinHeight="72"
+                    BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalContentAlignment="Stretch" VerticalAlignment="Center" />
+            </Border>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource GlassStrongBrush}" />
+      </Style>
+      <Style Selector="^:selected /template/ Border#PART_Bg">
+        <Setter Property="Background" Value="{DynamicResource GlassStrongBrush}" />
+      </Style>
+    </ControlTheme>
+
+  </Window.Resources>
+
+  <Window.Styles>
+    <Style Selector="TextBox">
+      <Setter Property="FontFamily" Value="Lucida Sans Unicode" />
+      <Setter Property="FontSize" Value="12.5" />
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="Padding" Value="9,6" />
+      <Setter Property="Background" Value="{DynamicResource GroundABrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="SelectionBrush" Value="{DynamicResource SakuraWashBrush}" />
+    </Style>
+
+    <Style Selector="ToolTip">
+      <Setter Property="Background" Value="{DynamicResource InkBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource GroundABrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="8,5" />
+      <Setter Property="FontSize" Value="11.5" />
+    </Style>
+
+    <Style Selector="ToolTip TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource GroundABrush}" />
+    </Style>
+
+    <Style Selector="Button.cap.close:pointerover /template/ Border#PART_Bg">
+      <Setter Property="Background" Value="{DynamicResource DangerWashBrush}" />
+    </Style>
+    <Style Selector="Button.cap.close:pointerover">
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <Style Selector="Button.rowAction">
+      <Setter Property="Opacity" Value="0.3" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover Button.rowAction">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <Style Selector="Button.settingsRow">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Padding" Value="9,7" />
+    </Style>
+
+    <Style Selector="Border.segTrack">
+      <Setter Property="Background" Value="{DynamicResource LineFaintBrush}" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="2" />
+    </Style>
+
+    <Style Selector="Border.statusChip">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="20" />
+      <Setter Property="Padding" Value="8,3" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="44,*">
+
+    <!-- ══════════ title bar ══════════ -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Background="Transparent"
+          PointerPressed="TitleBar_PointerPressed"
+          DoubleTapped="TitleBar_DoubleTapped">
+
+      <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="9"
+                  Margin="16,0,0,0" VerticalAlignment="Center">
+        <Image Source="/Assets/kitty.png" Width="30" Height="30" Stretch="Uniform"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapInterpolationMode="HighQuality" />
+        <TextBlock Text="Kitty" Classes="wordmark" FontSize="19"
+                   VerticalAlignment="Center" />
+        <TextBlock Text="GitHub trending" Classes="label" Margin="6,2,0,0"
+                   VerticalAlignment="Center" />
+      </StackPanel>
+
+      <StackPanel Grid.Column="2" Orientation="Horizontal">
+        <Button Theme="{StaticResource CapButton}" Classes="cap" Click="MinimizeClick">
+          <ToolTip.Tip>
+            <TextBlock Text="Minimize" Foreground="{DynamicResource GroundABrush}" />
+          </ToolTip.Tip>
+          <Panel Width="12" Height="12">
+            <Border Width="11" Height="1.5" CornerRadius="0.75"
+                    Background="{Binding $parent[Button].Foreground}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Panel>
+        </Button>
+        <Button Theme="{StaticResource CapButton}" Classes="cap" Click="MaximizeClick">
+          <ToolTip.Tip>
+            <TextBlock Text="Maximize / restore" Foreground="{DynamicResource GroundABrush}" />
+          </ToolTip.Tip>
+          <Panel Width="12" Height="12">
+            <Path x:Name="MaximizeGlyph" Stroke="{Binding $parent[Button].Foreground}"
+                  StrokeThickness="1.6" Stretch="Uniform"
+                  Data="M5.5 5.5 H18.5 V18.5 H5.5 Z" />
+            <Path x:Name="RestoreGlyph" IsVisible="False"
+                  Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.6"
+                  Stretch="Uniform"
+                  Data="M8 8 V4.5 H19.5 V16 H16 M4.5 8 H16 V19.5 H4.5 Z" />
+          </Panel>
+        </Button>
+        <Button Theme="{StaticResource CapButton}" Classes="cap close" Click="CloseClick">
+          <ToolTip.Tip>
+            <TextBlock Text="Close" Foreground="{DynamicResource GroundABrush}" />
+          </ToolTip.Tip>
+          <Panel Width="12" Height="12">
+            <Path Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.6"
+                  StrokeLineCap="Round" Stretch="Uniform"
+                  Data="M4 4 L20 20 M20 4 L4 20" />
+          </Panel>
+        </Button>
+      </StackPanel>
+    </Grid>
+
+    <!-- ══════════ body: rail + sheet ══════════ -->
+    <Grid Grid.Row="1" ColumnDefinitions="232,*">
+
+      <!-- ── language rail ── -->
+      <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Margin="14,6,10,10">
+
+        <StackPanel Grid.Row="0" Spacing="15">
+          <StackPanel Spacing="7">
+            <TextBlock Text="Range" Classes="label" />
+            <Border Classes="segTrack">
+              <Grid ColumnDefinitions="*,*,*">
+                <RadioButton x:Name="SegDaily" Grid.Column="0" Theme="{StaticResource SegRadio}"
+                             GroupName="range" Tag="Daily" Content="Daily"
+                             IsCheckedChanged="RangeChanged" />
+                <RadioButton x:Name="SegWeekly" Grid.Column="1" Theme="{StaticResource SegRadio}"
+                             GroupName="range" Tag="Weekly" Content="Weekly"
+                             IsCheckedChanged="RangeChanged" />
+                <RadioButton x:Name="SegMonthly" Grid.Column="2" Theme="{StaticResource SegRadio}"
+                             GroupName="range" Tag="Monthly" Content="Monthly"
+                             IsCheckedChanged="RangeChanged" />
+              </Grid>
+            </Border>
+          </StackPanel>
+
+          <StackPanel Spacing="7">
+            <TextBlock Text="Languages" Classes="label" />
+            <TextBox x:Name="RailSearch" Text="{Binding RailFilter}"
+                     PlaceholderText="Find a language" MinHeight="30" />
+          </StackPanel>
+        </StackPanel>
+
+        <ListBox Grid.Row="1" x:Name="RailList" ItemsSource="{Binding VisibleLanguages}"
+                 SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0" Padding="0"
+                 Margin="0,8,0,8"
+                 ItemContainerTheme="{StaticResource LangRow}"
+                 ScrollViewer.AllowAutoHide="True">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:LanguageOption">
+              <TextBlock Text="{Binding Label}" FontSize="12.5"
+                         Foreground="{Binding $parent[ListBoxItem].Foreground}"
+                         TextTrimming="CharacterEllipsis" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" Spacing="13">
+          <StackPanel Spacing="7">
+            <TextBlock Text="Source" Classes="label" />
+            <Border Classes="segTrack">
+              <Grid ColumnDefinitions="*,*">
+                <RadioButton x:Name="SrcApi" Grid.Column="0" Theme="{StaticResource SegRadio}"
+                             GroupName="source" Tag="api" Content="Search API"
+                             IsCheckedChanged="SourceModeChanged" />
+                <RadioButton x:Name="SrcScrape" Grid.Column="1" Theme="{StaticResource SegRadio}"
+                             GroupName="source" Tag="scrape" Content="Pages"
+                             IsCheckedChanged="SourceModeChanged" />
+              </Grid>
+            </Border>
+          </StackPanel>
+
+          <Button x:Name="SettingsButton" Theme="{StaticResource FlatButton}"
+                  Classes="settingsRow" Click="OpenSettingsClick">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <Panel Grid.Column="0" Width="14" Height="14" VerticalAlignment="Center">
+                <Path Stroke="{DynamicResource InkMutedBrush}" StrokeThickness="1.6"
+                      StrokeLineCap="Round" Stretch="Uniform"
+                      Data="M4 21 V14 M4 10 V3 M12 21 V12 M12 8 V3 M20 21 V16 M20 12 V3 M1 14 H7 M9 8 H15 M17 16 H23" />
+              </Panel>
+              <TextBlock Grid.Column="1" Text="Settings" FontSize="12.5"
+                         Margin="9,0,0,0" VerticalAlignment="Center"
+                         Foreground="{DynamicResource InkMutedBrush}" />
+            </Grid>
+          </Button>
+        </StackPanel>
+      </Grid>
+
+      <!-- ── content sheet ── -->
+      <Border Grid.Column="1" Margin="0,4,8,8" CornerRadius="12"
+              Background="{DynamicResource WellBrush}"
+              BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
+              ClipToBounds="True">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+
+          <!-- page header -->
+          <Grid Grid.Row="0" Margin="26,22,26,16" ColumnDefinitions="*,Auto">
+            <StackPanel Grid.Column="0" Spacing="2">
+              <TextBlock Text="Trending" Classes="display" FontSize="34" />
+              <TextBlock Classes="meta">
+                <Run Text="{Binding RangeText}" />
+                <Run Text="  ·  " Foreground="{DynamicResource InkGhostBrush}" />
+                <Run Text="{Binding CountSentence}" />
+              </TextBlock>
+            </StackPanel>
+
+            <Button Grid.Column="1" Theme="{StaticResource PrimaryButton}"
+                    VerticalAlignment="Center" Command="{Binding RefreshCommand}"
+                    ToolTip.Tip="Refresh the list (F5)">
+              <StackPanel Orientation="Horizontal" Spacing="7">
+                <Panel Width="13" Height="13" VerticalAlignment="Center">
+                  <Path Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.7"
+                        StrokeLineCap="Round" StrokeJoin="Round" Stretch="Uniform"
+                        Data="M23 4 L23 10 L17 10 M1 20 L1 14 L7 14 M3.51 9 A9 9 0 0 1 14.85 5.64 L23 10 M1 14 L4.64 18.36 A9 9 0 0 0 20.49 15" />
+                </Panel>
+                <TextBlock Text="Refresh" FontSize="12" VerticalAlignment="Center"
+                           Foreground="{Binding $parent[Button].Foreground}" />
+              </StackPanel>
+            </Button>
+          </Grid>
+
+          <!-- filter -->
+          <Grid Grid.Row="1" Margin="26,0,26,14" ColumnDefinitions="*,Auto">
+            <TextBox x:Name="FilterBox" Grid.Column="0" Width="360"
+                     HorizontalAlignment="Left"
+                     Text="{Binding Filter}"
+                     PlaceholderText="Filter repositories…" />
+            <TextBlock Grid.Column="1" Classes="label" VerticalAlignment="Center"
+                       Text="Name, owner or description" />
+          </Grid>
+
+          <!-- warning -->
+          <Border Grid.Row="2" Margin="26,0,26,12" Padding="11,8"
+                  Background="{DynamicResource AmberWashBrush}" CornerRadius="8"
+                  IsVisible="{Binding WarningText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <TextBlock Text="{Binding WarningText}" FontSize="12"
+                       Foreground="{DynamicResource AmberBrush}" TextWrapping="Wrap" />
+          </Border>
+
+          <!-- table head -->
+          <Border Grid.Row="3" Padding="26,0" Height="32"
+                  BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,1,0,1">
+            <Grid ColumnDefinitions="36,*,130,90,88,68">
+              <TextBlock Grid.Column="0" Text="#" Classes="label" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="1" Text="Repository" Classes="label" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="2" Text="Language" Classes="label" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="3" Text="Stars" Classes="label"
+                         HorizontalAlignment="Right" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="4" Text="Today" Classes="label"
+                         HorizontalAlignment="Right" VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+
+          <!-- rows -->
+          <Grid Grid.Row="4">
+            <ListBox x:Name="RepoList" ItemsSource="{Binding VisibleRepos}"
+                     Background="Transparent" BorderThickness="0" Padding="0"
+                     SelectionMode="Single"
+                     ItemContainerTheme="{StaticResource RepoRow}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.AllowAutoHide="True">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:RepoRowViewModel">
+                  <Grid ColumnDefinitions="36,*,130,90,88,68">
+
+                    <TextBlock Grid.Column="0" Text="{Binding RankDisplay}"
+                               Classes="mono" FontSize="11"
+                               Foreground="{DynamicResource InkGhostBrush}"
+                               VerticalAlignment="Center" />
+
+                    <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center"
+                                Margin="0,0,18,0">
+                      <TextBlock TextTrimming="CharacterEllipsis">
+                        <Run Text="{Binding Item.Owner}" FontSize="13"
+                             FontFamily="avares://Kitty/Assets/Fonts/IBMPlexMono-Regular.ttf#IBM Plex Mono"
+                             Foreground="{DynamicResource InkFaintBrush}" />
+                        <Run Text="/" FontSize="13"
+                             FontFamily="avares://Kitty/Assets/Fonts/IBMPlexMono-Regular.ttf#IBM Plex Mono"
+                             Foreground="{DynamicResource InkGhostBrush}" />
+                        <Run Text="{Binding Item.Name}" FontSize="13.5"
+                             FontFamily="avares://Kitty/Assets/Fonts/IBMPlexMono-Medium.ttf#IBM Plex Mono Medium"
+                             Foreground="{DynamicResource InkBrush}" />
+                      </TextBlock>
+                      <TextBlock Text="{Binding Description}" FontSize="12.5"
+                                 Foreground="{DynamicResource InkMutedBrush}"
+                                 TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6"
+                                VerticalAlignment="Center" IsVisible="{Binding HasLanguage}">
+                      <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                        <Ellipse.Fill>
+                          <SolidColorBrush Color="{Binding LanguageColor, Converter={x:Static vm:StringToColorConverter.Instance}}" />
+                        </Ellipse.Fill>
+                      </Ellipse>
+                      <TextBlock Text="{Binding Language}" FontSize="12"
+                                 Foreground="{DynamicResource InkMutedBrush}"
+                                 TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="3" Text="{Binding StarsDisplay}"
+                               Classes="mono" FontSize="12" HorizontalAlignment="Right"
+                               VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="4" Text="{Binding PeriodStarsDisplay}"
+                               Classes="mono_medium" FontSize="12" HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource SakuraDeepBrush}"
+                               IsVisible="{Binding HasPeriodStars}" />
+                    <TextBlock Grid.Column="4" Text="—" Classes="label"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"
+                               IsVisible="{Binding !HasPeriodStars}" />
+
+                    <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+                      <Button Theme="{StaticResource IconButton}" Classes="rowAction"
+                              Focusable="False"
+                              Command="{Binding $parent[ListBox].((vm:MainViewModel)DataContext).OpenRepoCommand}"
+                              CommandParameter="{Binding}" ToolTip.Tip="Open on GitHub">
+                        <Panel Width="12" Height="12">
+                          <Path Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.7"
+                                StrokeLineCap="Round" StrokeJoin="Round" Stretch="Uniform"
+                                Data="M18 13 L18 19 A2 2 0 0 1 16 21 L5 21 A2 2 0 0 1 3 19 L3 8 A2 2 0 0 1 5 6 L11 6 M15 3 L21 3 L21 9 M10 14 L21 3" />
+                        </Panel>
+                      </Button>
+                      <Button Theme="{StaticResource IconButton}" Classes="rowAction"
+                              Focusable="False"
+                              Command="{Binding $parent[ListBox].((vm:MainViewModel)DataContext).CopyCloneUrlCommand}"
+                              CommandParameter="{Binding}" ToolTip.Tip="Copy clone URL">
+                        <Panel Width="12" Height="12">
+                          <Path Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.7"
+                                StrokeLineCap="Round" StrokeJoin="Round" Stretch="Uniform"
+                                Data="M11 9 L20 9 A2 2 0 0 1 22 11 L22 20 A2 2 0 0 1 20 22 L11 22 A2 2 0 0 1 9 20 L9 9 Z M5 15 L4 15 A2 2 0 0 1 2 13 L2 4 A2 2 0 0 1 4 2 L13 2 A2 2 0 0 1 15 4 L15 5" />
+                        </Panel>
+                      </Button>
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- empty -->
+            <StackPanel x:Name="EmptyState" IsVisible="False"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Spacing="6" MaxWidth="360" Margin="0,0,0,24">
+              <TextBlock Text="Nothing here yet" FontSize="15" HorizontalAlignment="Center" />
+              <TextBlock Text="No repository matches this language, range and filter."
+                         Classes="meta" TextAlignment="Center" TextWrapping="Wrap" />
+              <Button Theme="{StaticResource FlatButton}"
+                      HorizontalAlignment="Center" Margin="0,6,0,0"
+                      Click="ClearFiltersClick">
+                <TextBlock Text="Clear filters" FontSize="12"
+                           Foreground="{DynamicResource InkBrush}" />
+              </Button>
+            </StackPanel>
+
+            <!-- loading: quiet skeletons, no shimmer -->
+            <StackPanel x:Name="LoadingState" IsVisible="False" Margin="26,0"
+                        Background="{DynamicResource WellBrush}">
+              <Border Height="72" BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                  <Border Width="210" Height="9" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" />
+                  <Border Width="330" Height="8" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" Opacity="0.6" />
+                </StackPanel>
+              </Border>
+              <Border Height="72" BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                  <Border Width="170" Height="9" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" />
+                  <Border Width="290" Height="8" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" Opacity="0.6" />
+                </StackPanel>
+              </Border>
+              <Border Height="72" BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                  <Border Width="240" Height="9" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" />
+                  <Border Width="320" Height="8" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" Opacity="0.6" />
+                </StackPanel>
+              </Border>
+              <Border Height="72" BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                  <Border Width="190" Height="9" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" />
+                  <Border Width="300" Height="8" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" Opacity="0.6" />
+                </StackPanel>
+              </Border>
+              <Border Height="72" BorderBrush="{DynamicResource LineFaintBrush}" BorderThickness="0,0,0,1">
+                <StackPanel VerticalAlignment="Center" Spacing="8">
+                  <Border Width="230" Height="9" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" />
+                  <Border Width="260" Height="8" CornerRadius="3" HorizontalAlignment="Left"
+                          Background="{DynamicResource LineFaintBrush}" Opacity="0.6" />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </Grid>
+
+          <!-- status line -->
+          <Border Grid.Row="5" Height="36" Padding="26,0">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{Binding SourceBadge}" Classes="mono" FontSize="10.5"
+                         VerticalAlignment="Center" />
+              <TextBlock Grid.Column="1" Text="{Binding StatusRight}" Classes="mono"
+                         FontSize="10.5" VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- ══════════ settings overlay ══════════ -->
+    <Grid x:Name="SettingsOverlay" Grid.Row="1" IsVisible="False"
+          Background="#33000000" PointerPressed="SettingsBackdropClick">
+      <Border Width="440" HorizontalAlignment="Right"
+              Background="{DynamicResource WellBrush}"
+              BorderBrush="{DynamicResource LineBrush}" BorderThickness="1,0,0,0">
+        <Grid RowDefinitions="Auto,*,Auto">
+
+          <Grid Grid.Row="0" Margin="24,18,16,12" ColumnDefinitions="*,Auto">
+            <TextBlock Text="Settings" Classes="display" FontSize="26"
+                       VerticalAlignment="Center" />
+            <Button Grid.Column="1" Theme="{StaticResource IconButton}"
+                    x:Name="CloseSettingsButton" Click="CloseSettingsClick"
+                    ToolTip.Tip="Close">
+              <Panel Width="12" Height="12">
+                <Path Stroke="{Binding $parent[Button].Foreground}" StrokeThickness="1.6"
+                      StrokeLineCap="Round" Stretch="Uniform"
+                      Data="M4 4 L20 20 M20 4 L4 20" />
+              </Panel>
+            </Button>
+          </Grid>
+
+          <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="24,0,24,24" Spacing="22">
+
+              <StackPanel Spacing="8">
+                <TextBlock Text="Appearance" Classes="label" />
+                <WrapPanel>
+                  <RadioButton x:Name="WorldRiso" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="riso" Content="Riso"
+                               IsCheckedChanged="WorldRadioChanged" />
+                  <RadioButton x:Name="WorldShelf" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="shelf" Content="Shelf"
+                               IsCheckedChanged="WorldRadioChanged" />
+                  <RadioButton x:Name="WorldBoard" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="board" Content="Board"
+                               IsCheckedChanged="WorldRadioChanged" />
+                  <RadioButton x:Name="WorldTape" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="tape" Content="Tape"
+                               IsCheckedChanged="WorldRadioChanged" />
+                  <RadioButton x:Name="WorldProgramme" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="programme" Content="Programme"
+                               IsCheckedChanged="WorldRadioChanged" />
+                  <RadioButton x:Name="WorldCanon" Theme="{StaticResource ChipRadio}"
+                               GroupName="world" Tag="canon" Content="Canon"
+                               IsCheckedChanged="WorldRadioChanged" />
+                </WrapPanel>
+                <TextBlock Classes="label" TextWrapping="Wrap"
+                           Text="Color only — type, layout and density stay the same." />
+              </StackPanel>
+
+              <StackPanel Spacing="8">
+                <TextBlock Text="Where the list comes from" Classes="label" />
+                <Border Classes="segTrack">
+                  <Grid ColumnDefinitions="*,*">
+                    <RadioButton x:Name="SrcApiSheet" Grid.Column="0" Theme="{StaticResource SegRadio}"
+                                 GroupName="sourceSheet" Tag="api" Content="Search API"
+                                 IsCheckedChanged="SourceModeChanged" />
+                    <RadioButton x:Name="SrcScrapeSheet" Grid.Column="1" Theme="{StaticResource SegRadio}"
+                                 GroupName="sourceSheet" Tag="scrape" Content="Pages"
+                                 IsCheckedChanged="SourceModeChanged" />
+                  </Grid>
+                </Border>
+                <TextBlock Classes="label" TextWrapping="Wrap"
+                           Text="The search API is fast and approximate. Trending pages are slower but rank honestly." />
+              </StackPanel>
+
+              <StackPanel Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Text="GitHub account" Classes="label"
+                             VerticalAlignment="Center" />
+                  <Border Grid.Column="1" Classes="statusChip">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <Ellipse Width="6" Height="6" VerticalAlignment="Center"
+                               Fill="{DynamicResource InkGhostBrush}" />
+                      <TextBlock Text="{Binding AuthStatusText}" FontSize="10.5"
+                                 Foreground="{DynamicResource InkMutedBrush}"
+                                 VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+
+                <StackPanel Spacing="8" IsVisible="{Binding !IsSigningIn}">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Theme="{StaticResource FlatButton}"
+                            Command="{Binding SignInCommand}"
+                            ToolTip.Tip="Open github.com and approve a code (Ctrl+Shift+G)">
+                      <TextBlock Text="Sign in with GitHub" FontSize="12"
+                                 Foreground="{DynamicResource InkBrush}" />
+                    </Button>
+                    <Button Theme="{StaticResource FlatButton}"
+                            Command="{Binding ShowClientIdCommand}"
+                            IsVisible="{Binding !ShowClientIdField}">
+                      <TextBlock Text="OAuth app…" FontSize="12"
+                                 Foreground="{DynamicResource InkMutedBrush}" />
+                    </Button>
+                  </StackPanel>
+                  <TextBlock Text="Or paste a personal access token" Classes="label" />
+                </StackPanel>
+
+                <Border IsVisible="{Binding IsSigningIn}" Padding="13,11"
+                        Background="{DynamicResource GroundABrush}"
+                        BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
+                        CornerRadius="8">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="Type this code on github.com/login/device"
+                               Classes="label" />
+                    <TextBlock Text="{Binding DeviceUserCode}" Classes="mono_medium"
+                               FontSize="20" />
+                    <WrapPanel>
+                      <Button Theme="{StaticResource FlatButton}" Margin="0,0,6,6"
+                              Command="{Binding CopyDeviceCodeCommand}">
+                        <TextBlock Text="Copy code" FontSize="11.5" />
+                      </Button>
+                      <Button Theme="{StaticResource FlatButton}" Margin="0,0,6,6"
+                              Command="{Binding OpenDevicePageCommand}">
+                        <TextBlock Text="Open GitHub" FontSize="11.5" />
+                      </Button>
+                      <Button Theme="{StaticResource FlatButton}" Margin="0,0,6,6"
+                              Command="{Binding CancelSignInCommand}">
+                        <TextBlock Text="Cancel" FontSize="11.5" />
+                      </Button>
+                    </WrapPanel>
+                  </StackPanel>
+                </Border>
+
+                <TextBox Text="{Binding TokenInput}" PasswordChar="•"
+                         IsVisible="{Binding !IsSigningIn}"
+                         PlaceholderText="ghp_… or github_pat_…" />
+
+                <StackPanel Spacing="6" IsVisible="{Binding ShowClientIdField}">
+                  <TextBlock Text="OAuth app client ID" Classes="label" />
+                  <TextBox Text="{Binding ClientIdInput}"
+                           PlaceholderText="Ov23li… from your OAuth app settings" />
+                  <TextBlock FontSize="11" TextWrapping="Wrap" LineHeight="16"
+                             Foreground="{DynamicResource InkFaintBrush}"
+                             Text="Create one at GitHub → Settings → Developer settings → OAuth apps, then enable Device Flow. Only the client ID is used." />
+                </StackPanel>
+
+                <TextBlock Text="{Binding SignInHint}" FontSize="11.5" TextWrapping="Wrap"
+                           LineHeight="17" Foreground="{DynamicResource SakuraDeepBrush}"
+                           IsVisible="{Binding SignInHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                <TextBlock FontSize="11.5" TextWrapping="Wrap" LineHeight="17"
+                           Foreground="{DynamicResource InkFaintBrush}"
+                           Text="{Binding AuthStatusDetail}" />
+                <TextBlock Text="{Binding SettingsHint}" FontSize="11.5" TextWrapping="Wrap"
+                           LineHeight="17" Foreground="{DynamicResource AmberBrush}"
+                           IsVisible="{Binding SettingsHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </StackPanel>
+
+            </StackPanel>
+          </ScrollViewer>
+
+          <Border Grid.Row="2" Padding="24,12"
+                  BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+              <Button Grid.Column="0" Theme="{StaticResource FlatButton}"
+                      HorizontalAlignment="Left" Command="{Binding SignOutCommand}"
+                      IsVisible="{Binding HasToken}">
+                <TextBlock Text="Sign out" FontSize="12"
+                           Foreground="{DynamicResource InkMutedBrush}" />
+              </Button>
+              <Button Grid.Column="1" Theme="{StaticResource PrimaryButton}"
+                      Command="{Binding SaveSettingsCommand}">
+                <TextBlock Text="Save" FontSize="12"
+                           Foreground="{Binding $parent[Button].Foreground}" />
+              </Button>
+            </Grid>
+          </Border>
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,129 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══ Kitty world: Category Standard  (id: canon, Light) ═══ -->
+
+  <Color x:Key="SystemAccentColor">#FF2563EB</Color>
+  <Color x:Key="SystemAccentColorDark1">#FF2157CF</Color>
+  <Color x:Key="SystemAccentColorDark2">#FF1C4BB3</Color>
+  <Color x:Key="SystemAccentColorDark3">#FF183F96</Color>
+  <Color x:Key="SystemAccentColorLight1">#FF4C7FEF</Color>
+  <Color x:Key="SystemAccentColorLight2">#FF739BF2</Color>
+  <Color x:Key="SystemAccentColorLight3">#FF9BB7F6</Color>
+
+  <!-- ground -->
+  <Color x:Key="GroundA">#FFFFFF</Color>
+  <Color x:Key="GroundB">#F7F8FA</Color>
+  <Color x:Key="GroundC">#F1F3F7</Color>
+
+  <!-- aurora identity -->
+  <SolidColorBrush x:Key="AuroraSakuraColor" Color="#2563EB" />
+  <SolidColorBrush x:Key="AuroraIrisColor" Color="#059669" />
+  <SolidColorBrush x:Key="AuroraMintColor" Color="#D97706" />
+  <SolidColorBrush x:Key="AuroraPeachColor" Color="#7C3AED" />
+
+  <!-- glass / surfaces -->
+  <Color x:Key="GlassColor">#FFFFFFFF</Color>
+  <Color x:Key="GlassStrongColor">#FFFFFFFF</Color>
+  <Color x:Key="GlassHoverColor">#FFFFFFFF</Color>
+  <Color x:Key="GlassDeepColor">#00000000</Color>
+  <Color x:Key="GlassFillTop">#00FFFFFF</Color>
+  <Color x:Key="GlassFillBottom">#00FFFFFF</Color>
+  <Color x:Key="LineColor">#E5E7EB</Color>
+  <Color x:Key="LineStrongColor">#D1D5DB</Color>
+  <Color x:Key="LineFaintColor">#EEF0F3</Color>
+  <Color x:Key="EdgeColor">#FFFFFF</Color>
+  <Color x:Key="WellColor">#FFFFFF</Color>
+  <Color x:Key="WellHoverColor">#FFFFFF</Color>
+
+  <!-- ink -->
+  <Color x:Key="InkColor">#111827</Color>
+  <Color x:Key="InkMutedColor">#4B5563</Color>
+  <Color x:Key="InkFaintColor">#9CA3AF</Color>
+  <Color x:Key="InkGhostColor">#D1D5DB</Color>
+  <Color x:Key="OnAccentColor">#FFFFFF</Color>
+  <Color x:Key="OnChromeColor">#FFFFFF</Color>
+
+  <!-- accents -->
+  <Color x:Key="AccentColor">#2563EB</Color>
+  <Color x:Key="AccentDeepColor">#1D4ED8</Color>
+  <Color x:Key="AccentSoftColor">#3B82F6</Color>
+  <Color x:Key="AccentWashColor">#2E2563EB</Color>
+  <Color x:Key="AccentWashFaint">#162563EB</Color>
+  <Color x:Key="AccentClear">#002563EB</Color>
+  <Color x:Key="SecondColor">#059669</Color>
+  <Color x:Key="SecondDeepColor">#047857</Color>
+  <Color x:Key="SecondSoftColor">#34D399</Color>
+  <Color x:Key="SecondWashColor">#2E059669</Color>
+  <Color x:Key="SecondWashFaint">#14059669</Color>
+  <Color x:Key="SecondClear">#00059669</Color>
+  <Color x:Key="ThirdColor">#D97706</Color>
+  <Color x:Key="ThirdDeepColor">#B45309</Color>
+  <Color x:Key="ThirdWashColor">#2ED97706</Color>
+  <Color x:Key="ThirdWashFaint">#14D97706</Color>
+  <Color x:Key="ThirdClear">#00D97706</Color>
+  <Color x:Key="Accent4Wash">#247C3AED</Color>
+  <Color x:Key="Accent4WashFaint">#127C3AED</Color>
+  <Color x:Key="Accent4Clear">#007C3AED</Color>
+  <Color x:Key="GoldColor">#B45309</Color>
+  <Color x:Key="GoldDeepColor">#92400E</Color>
+  <Color x:Key="GoldWashColor">#24B45309</Color>
+  <Color x:Key="GoldClear">#00B45309</Color>
+
+  <!-- signals -->
+  <Color x:Key="AmberColor">#D97706</Color>
+  <Color x:Key="AmberWashColor">#24D97706</Color>
+  <Color x:Key="DangerColor">#DC2626</Color>
+  <Color x:Key="DangerWashColor">#24DC2626</Color>
+  <Color x:Key="LedColor">#059669</Color>
+
+  <!-- atmosphere -->
+  <Color x:Key="VignetteInnerColor">#00FFFFFF</Color>
+  <Color x:Key="VignetteOuterColor">#0D000000</Color>
+  <Color x:Key="HearthAColor">#00000000</Color>
+  <Color x:Key="HearthBColor">#00000000</Color>
+  <Color x:Key="HearthCColor">#00000000</Color>
+  <Color x:Key="PillAColor">#3B82F6</Color>
+  <Color x:Key="PillBColor">#2563EB</Color>
+  <Color x:Key="PillCColor">#1D4ED8</Color>
+  <Color x:Key="PillTextAColor">#FFFFFF</Color>
+  <Color x:Key="PillTextBColor">#FFFFFF</Color>
+  <Color x:Key="MedallionAColor">#14000000</Color>
+  <Color x:Key="MedallionBColor">#08000000</Color>
+  <Color x:Key="SheenColor">#59FFFFFF</Color>
+  <Color x:Key="SheenClear">#00FFFFFF</Color>
+  <Color x:Key="HoverBloomColor">#1F2563EB</Color>
+  <Color x:Key="SkullColor">#0A000000</Color>
+  <Color x:Key="SkullStrongColor">#14000000</Color>
+
+  <!-- type: one voice per world, same token names everywhere -->
+  <FontFamily x:Key="WordmarkFont">avares://Kitty/Assets/Fonts/Ballet.ttf#Ballet 28pt</FontFamily>
+  <FontFamily x:Key="SerifFont">Segoe UI</FontFamily>
+  <FontFamily x:Key="TitleFont">Segoe UI Semibold</FontFamily>
+  <FontFamily x:Key="SignatureFont">avares://Kitty/Assets/Fonts/Rochester.ttf#Rochester</FontFamily>
+  <FontFamily x:Key="ScriptFont">avares://Kitty/Assets/Fonts/Ruthie.ttf#Ruthie</FontFamily>
+  <FontFamily x:Key="FancyFont">Segoe UI</FontFamily>
+  <FontFamily x:Key="DisplayFont">Segoe UI Semibold</FontFamily>
+  <FontFamily x:Key="RoundedFont">Segoe UI</FontFamily>
+  <FontFamily x:Key="NumeralFont">avares://Kitty/Assets/Fonts/IBMPlexMono-Medium.ttf#IBM Plex Mono Medium</FontFamily>
+  <FontFamily x:Key="MonoFont">avares://Kitty/Assets/Fonts/IBMPlexMono-Regular.ttf#IBM Plex Mono</FontFamily>
+  <FontFamily x:Key="MonoMediumFont">avares://Kitty/Assets/Fonts/IBMPlexMono-Medium.ttf#IBM Plex Mono Medium</FontFamily>
+  <FontFamily x:Key="BodyFont">Lucida Sans Unicode</FontFamily>
+
+  <!-- density + character -->
+  <CornerRadius x:Key="CardRadius">10</CornerRadius>
+  <CornerRadius x:Key="ChipRadius">999</CornerRadius>
+  <CornerRadius x:Key="FieldRadius">8</CornerRadius>
+  <Thickness x:Key="CardPad">18,14,14,14</Thickness>
+  <x:Double x:Key="RowSpace">8</x:Double>
+  <x:Double x:Key="HeaderSize">34</x:Double>
+  <x:Double x:Key="DisplaySize">34</x:Double>
+  <x:Double x:Key="TitleSize">22</x:Double>
+  <x:Double x:Key="BodySize">12.5</x:Double>
+  <x:Double x:Key="MicroSize">9.5</x:Double>
+  <x:Double x:Key="MicroTrack">1.4</x:Double>
+  <x:Double x:Key="AtmosphereOpacity">0</x:Double>
+  <BoxShadows x:Key="CardShadow">0 8 24 -16 #33200030</BoxShadows>
+  <BoxShadows x:Key="AccentGlow">0 0 0 0 #00000000</BoxShadows>
+
+</ResourceDictionary>

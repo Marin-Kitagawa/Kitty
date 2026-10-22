@@ -1,0 +1,52 @@
+direction: right
+
+# OAuth 2.0 Device Flow
+vars: {
+  d2-config: { theme-id: 0 }
+  default-style: {
+    style: {
+      fill: "#FBF7EF"
+      stroke: "#D8CDB6"
+      "stroke-width": 1.5
+      "font-size": 13
+      "font-family": "Segoe UI"
+      padding: 10
+      "border-radius": 6
+    }
+  }
+}
+
+user: "User" { style: { fill: "#FFFFFF" } }
+kitty: "Kitty App" { style: { fill: "#F6F1E7" } }
+device_ep: "POST /login/device/code" { style: { fill: "#F6F1E7" } }
+token_ep: "POST /login/oauth/access_token" { style: { fill: "#F6F1E7" } }
+user_ep: "GET /user" { style: { fill: "#F6F1E7" } }
+github: "GitHub" { style: { fill: "#F6F1E7" } }
+
+# Step 1: Request device code
+user -> kitty: "Clicks Sign in with GitHub"
+kitty -> device_ep: "client_id (+ scope)"
+device_ep -> kitty: "{device_code, user_code, verification_uri, expires_in, interval}"
+kitty -> user: "Show user_code + Open verification_uri"
+
+# Step 2: Poll for token
+poll: "Poll every interval\n(max expires_in)" { style: { fill: "#FBF7EF" } }
+kitty -> poll: "Start timer"
+poll -> token_ep: "device_code + grant_type"
+token_ep -> poll: "{access_token, refresh_token?, expires_in, scope} or authorization_pending"
+poll -> poll: "authorization_pending -> wait interval"
+poll -> kitty: "success -> store token, refresh_token, expiry"
+poll -> user: "error -> show in status bar"
+
+# Step 3: Verify login
+kitty -> user_ep: "Authorization: Bearer access_token"
+user_ep -> kitty: "{login, ...} or 401"
+kitty -> settings: "Save token, login, refresh_token, expires_at"
+kitty -> user: "Show signed-in avatar"
+
+# Token refresh (when ExpiresAtUtc near)
+refresh: "RefreshAsync(client_id, refresh_token)" { style: { fill: "#FFF3E0" } }
+kitty -> refresh: "On EnsureFreshTokenAsync"
+refresh -> token_ep: "grant_type=refresh_token"
+token_ep -> refresh: "new access_token (+ new refresh_token?)"
+refresh -> settings: "Update token, expiry"

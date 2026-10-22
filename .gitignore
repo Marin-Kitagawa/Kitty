@@ -1,0 +1,69 @@
+# Build outputs
+bin/
+obj/
+publish/
+artifacts/
+release-single/
+
+# IDE / Editor
+.vs/
+.idea/
+*.sln.docstates
+*.suo
+*.user
+*.userprefs
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+trace.log
+
+# Local settings (user-specific)
+**/settings.json
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Visual Studio / Rider
+*.rsuser
+*.DotSettings
+*.DotSettings.user
+
+# Test results
+TestResults/
+*.trx
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# D2 test outputs
+docs/diagrams/test*.png
+
+# macOS
+*.app/
+*.dmg
+
+# Windows installer
+*.msi
+*.exe (except in release artifacts)
+
+# Linux packages
+*.deb
+*.rpm
+*.AppImage
+*.snaprelease/
